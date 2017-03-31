@@ -1,0 +1,27 @@
+{
+    "name": "tijmen-wierenga/cqrs",
+    "require-dev": {
+        "phpunit/phpunit": "^6.0",
+        "symfony/var-dumper": "^3.2"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tijmen Wierenga",
+            "email": "tijmen@devmob.com"
+        }
+    ],
+    "require": {
+        "beberlei/assert": "^2.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "TijmenWierenga\\Project\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TijmenWierenga\\Project\\Tests\\": "test/"
+        }
+    }
+}
