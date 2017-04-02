@@ -12,7 +12,8 @@
         }
     ],
     "require": {
-        "beberlei/assert": "^2.7"
+        "beberlei/assert": "^2.7",
+        "predis/predis": "^1.1"
     },
     "autoload": {
         "psr-4": {
@@ -21,7 +22,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "TijmenWierenga\\Project\\Tests\\": "test/"
+            "TijmenWierenga\\Project\\Tests\\": "tests/"
         }
     }
 }
