@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+    php:
+        build:
+            context: docker/php
+            args:
+                username: ${USERNAME}
+                user_id: ${USER_ID}
+        volumes:
+            - .:/var/www/project
+        tty: true
+        hostname: php
+        container_name: cqrs-dev
+
+    redis:
+        image: redis:latest
