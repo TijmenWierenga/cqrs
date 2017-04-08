@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use TijmenWierenga\Project\Timesheets\Domain\Model\ValueObject\TimeFrame;
 use TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog\WorkLog;
+use TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog\WorkLogId;
 use TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog\WorkLogWasCreated;
 
 /**
@@ -22,7 +23,7 @@ class WorkLogTest extends TestCase
         $end = new DateTimeImmutable("2017-03-31T17:00:00");
         $timeFrame = TimeFrame::new($start, $end);
 
-        $workLog = WorkLog::new($timeFrame);
+        $workLog = WorkLog::new(WorkLogId::new(), $timeFrame);
 
         $this->assertInstanceOf(WorkLog::class, $workLog);
         $this->assertSame($timeFrame, $workLog->getTimeFrame());

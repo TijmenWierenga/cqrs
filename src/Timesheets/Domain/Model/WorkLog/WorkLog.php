@@ -14,21 +14,28 @@ class WorkLog extends AggregateRoot
      * @var TimeFrame
      */
     private $timeFrame;
+    /**
+     * @var WorkLogId
+     */
+    private $workLogId;
 
     /**
      * WorkLog constructor.
+     * @param WorkLogId $workLogId
      */
-    private function __construct()
+    private function __construct(WorkLogId $workLogId)
     {
+        $this->workLogId = $workLogId;
     }
 
     /**
+     * @param WorkLogId $workLogId
      * @param TimeFrame $timeFrame
      * @return WorkLog
      */
-    public static function new(TimeFrame $timeFrame): self
+    public static function new(WorkLogId $workLogId, TimeFrame $timeFrame): self
     {
-        $workLog = new self();
+        $workLog = new self($workLogId);
 
         $workLog->apply(new WorkLogWasCreated($timeFrame));
 
