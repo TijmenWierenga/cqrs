@@ -2,13 +2,15 @@
 
 namespace TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog;
 
+use TijmenWierenga\Project\Timesheets\Domain\Event\EventStream;
 use TijmenWierenga\Project\Timesheets\Domain\Model\Aggregate\AggregateRoot;
+use TijmenWierenga\Project\Timesheets\Domain\Model\Aggregate\EventSourcedAggregateRoot;
 use TijmenWierenga\Project\Timesheets\Domain\Model\ValueObject\TimeFrame;
 
 /**
  * @author Tijmen Wierenga <tijmen.wierenga@devmob.com>
  */
-class WorkLog extends AggregateRoot
+class WorkLog extends AggregateRoot implements EventSourcedAggregateRoot
 {
     /**
      * @var TimeFrame
@@ -43,6 +45,21 @@ class WorkLog extends AggregateRoot
     }
 
     /**
+     * @param EventStream $history
+     * @return WorkLog
+     */
+    public static function reconstitute(EventStream $history)
+    {
+        $workLog = new static(WorkLogId::fromString($history->getId()));
+
+        foreach ($history->getEvents() as $event) {
+            $workLog->apply($event);
+        }
+
+        return $workLog;
+    }
+
+    /**
      * @param WorkLogWasCreated $event
      */
     protected function applyWorkLogWasCreated(WorkLogWasCreated $event): void
@@ -56,5 +73,13 @@ class WorkLog extends AggregateRoot
     public function getTimeFrame(): TimeFrame
     {
         return $this->timeFrame;
+    }
+
+    /**
+     * @return WorkLogId
+     */
+    public function getWorkLogId(): WorkLogId
+    {
+        return $this->workLogId;
     }
 }
