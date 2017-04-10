@@ -1,0 +1,5 @@
+docker exec \
+    -it \
+    -u $(id -u) \
+    cqrs-redis \
+    redis-cli
