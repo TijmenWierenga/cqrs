@@ -1,0 +1,6 @@
+docker run \
+    --rm \
+    -v $(pwd):/app \
+    -u $(id -u) \
+    composer/composer \
+    "$@"
