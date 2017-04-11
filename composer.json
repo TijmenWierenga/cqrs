@@ -14,7 +14,8 @@
     "require": {
         "beberlei/assert": "^2.7",
         "predis/predis": "^1.1",
-        "ramsey/uuid": "^3.6"
+        "ramsey/uuid": "^3.6",
+        "nilportugues/serializer": "^1.2"
     },
     "autoload": {
         "psr-4": {
