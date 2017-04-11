@@ -36,7 +36,7 @@ class EventStream
     }
 
     /**
-     * @return array
+     * @return DomainEvent[]
      */
     public function getEvents(): array
     {
