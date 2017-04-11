@@ -7,6 +7,14 @@ namespace TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog;
 interface WorkLogRepository
 {
     /**
+     * Finds a WorkLog by WorkLogId
+     *
+     * @param WorkLogId $workLogId
+     * @return WorkLog
+     */
+    public function find(WorkLogId $workLogId): WorkLog;
+
+    /**
      * Stores a WorkLog.
      *
      * @param WorkLog $workLog
