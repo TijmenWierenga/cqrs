@@ -23,16 +23,22 @@ class RedisEventStoreTest extends TestCase
      */
     private $eventStore;
 
+    /**
+     * @var Client
+     */
+    private $client;
+
     public function setUp()
     {
-        $client = new Client([
+        $this->client = new Client([
             'scheme' => 'tcp',
             'host' => getenv('REDIS_HOST'),
-            'port' => getenv('REDIS_PORT')
+            'port' => getenv('REDIS_PORT'),
+            'database' => getenv('REDIS_TESTING_DB')
         ]);
         $serializer = new Serializer(new JsonStrategy());
 
-        $this->eventStore = new RedisEventStore($client, $serializer);
+        $this->eventStore = new RedisEventStore($this->client, $serializer);
     }
 
     /**
