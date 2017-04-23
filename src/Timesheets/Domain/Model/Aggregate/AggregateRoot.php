@@ -44,4 +44,12 @@ class AggregateRoot
     {
         return $this->recordedEvents;
     }
+
+    /**
+     * Clears all recorded events
+     */
+    public function clearEvents(): void
+    {
+        $this->recordedEvents = [];
+    }
 }
