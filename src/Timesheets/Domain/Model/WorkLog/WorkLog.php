@@ -5,6 +5,7 @@ namespace TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog;
 use TijmenWierenga\Project\Timesheets\Domain\Event\EventStream;
 use TijmenWierenga\Project\Timesheets\Domain\Model\Aggregate\AggregateRoot;
 use TijmenWierenga\Project\Timesheets\Domain\Model\Aggregate\EventSourcedAggregateRoot;
+use TijmenWierenga\Project\Timesheets\Domain\Model\User\UserId;
 use TijmenWierenga\Project\Timesheets\Domain\Model\ValueObject\TimeFrame;
 
 /**
@@ -22,6 +23,11 @@ class WorkLog extends AggregateRoot implements EventSourcedAggregateRoot
     private $workLogId;
 
     /**
+     * @var UserId
+     */
+    private $userId;
+
+    /**
      * WorkLog constructor.
      * @param WorkLogId $workLogId
      */
@@ -32,14 +38,15 @@ class WorkLog extends AggregateRoot implements EventSourcedAggregateRoot
 
     /**
      * @param WorkLogId $workLogId
+     * @param UserId $userId
      * @param TimeFrame $timeFrame
      * @return WorkLog
      */
-    public static function new(WorkLogId $workLogId, TimeFrame $timeFrame): self
+    public static function new(WorkLogId $workLogId, UserId $userId, TimeFrame $timeFrame): self
     {
         $workLog = new self($workLogId);
 
-        $workLog->apply(new WorkLogWasCreated($timeFrame));
+        $workLog->apply(new WorkLogWasCreated($workLogId, $userId, $timeFrame));
 
         return $workLog;
     }
@@ -65,6 +72,7 @@ class WorkLog extends AggregateRoot implements EventSourcedAggregateRoot
     protected function applyWorkLogWasCreated(WorkLogWasCreated $event): void
     {
         $this->timeFrame = $event->getTimeFrame();
+        $this->userId = $event->getUserId();
     }
 
     /**
@@ -81,5 +89,13 @@ class WorkLog extends AggregateRoot implements EventSourcedAggregateRoot
     public function getWorkLogId(): WorkLogId
     {
         return $this->workLogId;
+    }
+
+    /**
+     * @return UserId
+     */
+    public function getUserId(): UserId
+    {
+        return $this->userId;
     }
 }

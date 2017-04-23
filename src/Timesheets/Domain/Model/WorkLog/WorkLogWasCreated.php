@@ -2,7 +2,9 @@
 
 namespace TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog;
 
+use DateTimeImmutable;
 use TijmenWierenga\Project\Timesheets\Domain\Event\DomainEvent;
+use TijmenWierenga\Project\Timesheets\Domain\Model\User\UserId;
 use TijmenWierenga\Project\Timesheets\Domain\Model\ValueObject\TimeFrame;
 
 /**
@@ -16,12 +18,39 @@ class WorkLogWasCreated implements DomainEvent
     private $timeFrame;
 
     /**
+     * @var WorkLogId
+     */
+    private $workLogId;
+
+    /**
+     * @var DateTimeImmutable
+     */
+    private $occurredOn;
+    /**
+     * @var UserId
+     */
+    private $userId;
+
+    /**
      * WorkLogWasCreated constructor.
+     * @param WorkLogId $workLogId
+     * @param UserId $userId
      * @param TimeFrame $timeFrame
      */
-    public function __construct(TimeFrame $timeFrame)
+    public function __construct(WorkLogId $workLogId, UserId $userId, TimeFrame $timeFrame)
     {
         $this->timeFrame = $timeFrame;
+        $this->workLogId = $workLogId;
+        $this->userId = $userId;
+        $this->occurredOn = new DateTimeImmutable();
+    }
+
+    /**
+     * @return WorkLogId
+     */
+    public function getWorkLogId(): WorkLogId
+    {
+        return $this->workLogId;
     }
 
     /**
@@ -30,5 +59,23 @@ class WorkLogWasCreated implements DomainEvent
     public function getTimeFrame(): TimeFrame
     {
         return $this->timeFrame;
+    }
+
+    /**
+     * @return UserId
+     */
+    public function getUserId(): UserId
+    {
+        return $this->userId;
+    }
+
+    /**
+     * Returns the date and time when the event occurred.
+     *
+     * @return DateTimeImmutable
+     */
+    public function occurredOn(): DateTimeImmutable
+    {
+        return $this->occurredOn;
     }
 }
