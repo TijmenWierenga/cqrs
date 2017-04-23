@@ -6,6 +6,7 @@ use NilPortugues\Serializer\Serializer;
 use NilPortugues\Serializer\Strategy\JsonStrategy;
 use PHPUnit\Framework\TestCase;
 use Predis\Client;
+use TijmenWierenga\Project\Timesheets\Domain\Model\User\UserId;
 use TijmenWierenga\Project\Timesheets\Infrastructure\Event\RedisEventStore;
 use TijmenWierenga\Project\Timesheets\Domain\Event\EventStore;
 use TijmenWierenga\Project\Timesheets\Domain\Event\EventStream;
@@ -46,7 +47,7 @@ class RedisEventStoreTest extends TestCase
      */
     public function it_appends_events_to_the_store()
     {
-        $workLog = WorkLog::new(WorkLogId::new(), TimeFrame::new(
+        $workLog = WorkLog::new(WorkLogId::new(), UserId::new(), TimeFrame::new(
             new DateTimeImmutable("2017-04-10T08:00:00"),
             new DateTimeImmutable("2017-04-10T14:00:00")
         ));
@@ -59,5 +60,15 @@ class RedisEventStoreTest extends TestCase
 
         $this->assertEquals($eventStream->getEvents(), $retrievedEventStream->getEvents());
         $this->assertEquals($workLog, $reconstitutedWorkLog);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_an_empty_event_stream_when_id_does_not_exist()
+    {
+    	$eventStream = $this->eventStore->getEventsFor(WorkLogId::new());
+
+    	$this->assertEmpty($eventStream->getEvents());
     }
 }
