@@ -1,12 +1,14 @@
 <?php
 namespace TijmenWierenga\Project\Timesheets\Domain\Model\User;
 
+use TijmenWierenga\Project\Timesheets\Domain\Event\EventStream;
 use TijmenWierenga\Project\Timesheets\Domain\Model\Aggregate\AggregateRoot;
+use TijmenWierenga\Project\Timesheets\Domain\Model\Aggregate\EventSourcedAggregateRoot;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
  */
-class User extends AggregateRoot
+class User extends AggregateRoot implements EventSourcedAggregateRoot
 {
     /**
      * @var UserId
@@ -69,5 +71,20 @@ class User extends AggregateRoot
     {
         $this->firstName = $event->getFirstName();
         $this->lastName = $event->getLastName();
+    }
+
+    /**
+     * @param EventStream $history
+     * @return EventSourcedAggregateRoot
+     */
+    public static function reconstitute(EventStream $history)
+    {
+        $user = new static(UserId::fromString($history->getId()));
+
+        foreach ($history->getEvents() as $event) {
+            $user->apply($event);
+        }
+
+        return $user;
     }
 }
