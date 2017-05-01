@@ -2,8 +2,10 @@
 namespace TijmenWierenga\Project\Tests\Timesheets\Domain\Model\User;
 
 use PHPUnit\Framework\TestCase;
+use TijmenWierenga\Project\Timesheets\Domain\Event\EventStream;
 use TijmenWierenga\Project\Timesheets\Domain\Model\User\User;
 use TijmenWierenga\Project\Timesheets\Domain\Model\User\UserId;
+use TijmenWierenga\Project\Timesheets\Domain\Model\User\UserWasCreated;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
@@ -22,5 +24,24 @@ class UserTest extends TestCase
     	$this->assertEquals($userId, $user->getUserId());
     	$this->assertEquals('Tijmen', $user->getFirstName());
     	$this->assertEquals('Wierenga', $user->getLastName());
+    }
+
+    /**
+     * @test
+     */
+    public function a_user_can_be_reconstituted()
+    {
+        $userId = UserId::new();
+        $events = [
+            new UserWasCreated($userId, 'John', 'Doe')
+        ];
+
+    	$history = new EventStream((string) $userId, $events);
+    	/** @var User $user */
+        $user = User::reconstitute($history);
+
+        $this->assertEquals('John', $user->getFirstName());
+        $this->assertEquals('Doe', $user->getLastName());
+        $this->assertEquals($userId, $user->getUserId());
     }
 }
