@@ -35,7 +35,7 @@ class RedisEventStoreTest extends TestCase
             'scheme' => 'tcp',
             'host' => getenv('REDIS_HOST'),
             'port' => getenv('REDIS_PORT'),
-            'database' => getenv('REDIS_TESTING_DB')
+            'database' => 15
         ]);
         $serializer = new Serializer(new JsonStrategy());
 
