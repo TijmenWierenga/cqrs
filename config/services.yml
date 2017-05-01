@@ -1,0 +1,13 @@
+services:
+    timesheets.worklog.repository:
+        class: TijmenWierenga\Project\Timesheets\Infrastructure\Repository\WorkLog\EventSourcedWorkLogRepository
+        arguments: ["@timesheets.event_store"]
+
+    timesheets.event_store:
+        class: TijmenWierenga\Project\Timesheets\Infrastructure\Event\RedisEventStore
+        autowire: true
+        arguments: ["@timesheets.redis.client", NilPortugues\Serializer\Serializer]
+
+    timesheets.redis.client:
+        class: Predis\Client
+        arguments: ["%redis_config%"]
