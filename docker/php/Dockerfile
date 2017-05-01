@@ -14,7 +14,11 @@ RUN useradd -ms /bin/zsh -u ${user_id} ${username} && \
 # Install base packages
 RUN apt-get update && \
     apt-get -yq install --no-install-recommends \
-    ca-certificates bzip2 git curl zip unzip acl zsh openssh-server
+    ca-certificates bzip2 git curl zip unzip acl zsh openssh-server libssl-dev
+
+# Install Mongo extension
+RUN pecl install mongodb-1.1.8 \
+    && docker-php-ext-enable mongodb
 
 # Install Oh-My-ZSH
 ADD .zshrc var/www/

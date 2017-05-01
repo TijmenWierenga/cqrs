@@ -1,5 +1,9 @@
 version: '2'
 
+volumes:
+  mongo_data:
+    driver: local
+
 services:
     php:
         build:
@@ -17,3 +21,12 @@ services:
     redis:
         image: redis:latest
         container_name: cqrs-redis
+
+    mongo:
+        image: mongo:3.4
+        container_name: cqrs-mongo
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+            - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+        volumes:
+            - mongo_data:/data/db
