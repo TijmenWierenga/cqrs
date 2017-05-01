@@ -13,5 +13,5 @@ services:
         arguments: ["%redis_config%"]
 
     timesheets.mongo.client:
-        class: Mongo\Client
+        class: MongoDB\Client
         arguments: ["%mongo_uri%"]
