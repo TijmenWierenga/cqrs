@@ -16,7 +16,9 @@
         "predis/predis": "^1.1",
         "ramsey/uuid": "^3.6",
         "nilportugues/serializer": "^1.2",
-        "symfony/dependency-injection": "^3.2"
+        "symfony/dependency-injection": "^3.2",
+        "symfony/yaml": "^3.2",
+        "symfony/config": "^3.2"
     },
     "autoload": {
         "psr-4": {
