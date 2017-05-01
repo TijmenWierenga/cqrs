@@ -11,3 +11,7 @@ services:
     timesheets.redis.client:
         class: Predis\Client
         arguments: ["%redis_config%"]
+
+    timesheets.mongo.client:
+        class: Mongo\Client
+        arguments: ["%mongo_uri%"]
