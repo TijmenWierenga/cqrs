@@ -31,6 +31,7 @@ class EventSourcedWorkLogRepository implements WorkLogRepository
      * Finds a WorkLog by WorkLogId
      *
      * @param WorkLogId $workLogId
+     * @throws ModelNotFoundException
      * @return WorkLog
      */
     public function find(WorkLogId $workLogId): WorkLog
