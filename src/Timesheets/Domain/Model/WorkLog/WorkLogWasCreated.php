@@ -3,7 +3,7 @@
 namespace TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog;
 
 use DateTimeImmutable;
-use TijmenWierenga\Project\Shared\Domain\Event\DomainEvent;
+use TijmenWierenga\Project\Common\Domain\Event\DomainEvent;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserId;
 use TijmenWierenga\Project\Timesheets\Domain\Model\ValueObject\TimeFrame;
 

@@ -1,5 +1,5 @@
 <?php
-namespace TijmenWierenga\Project\Shared\Domain\Projection;
+namespace TijmenWierenga\Project\Common\Domain\Projection;
 
 use RuntimeException;
 

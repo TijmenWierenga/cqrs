@@ -4,13 +4,13 @@ namespace TijmenWierenga\Project\Tests\Timesheets\Infrastructure\Repository;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
-use TijmenWierenga\Project\Shared\Domain\Event\EventStore;
-use TijmenWierenga\Project\Shared\Domain\Event\EventStream;
+use TijmenWierenga\Project\Common\Domain\Event\EventStore;
+use TijmenWierenga\Project\Common\Domain\Event\EventStream;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserId;
 use TijmenWierenga\Project\Timesheets\Domain\Model\ValueObject\TimeFrame;
 use TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog\WorkLog;
 use TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog\WorkLogId;
-use TijmenWierenga\Project\Shared\Domain\Exception\ModelNotFoundException;
+use TijmenWierenga\Project\Common\Domain\Exception\ModelNotFoundException;
 use TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog\WorkLogWasCreated;
 use TijmenWierenga\Project\Timesheets\Infrastructure\Repository\WorkLog\EventSourcedWorkLogRepository;
 

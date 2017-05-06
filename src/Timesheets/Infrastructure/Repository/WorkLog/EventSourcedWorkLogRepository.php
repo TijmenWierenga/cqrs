@@ -1,9 +1,9 @@
 <?php
 namespace TijmenWierenga\Project\Timesheets\Infrastructure\Repository\WorkLog;
 
-use TijmenWierenga\Project\Shared\Domain\Event\EventStore;
-use TijmenWierenga\Project\Shared\Domain\Event\EventStream;
-use TijmenWierenga\Project\Shared\Domain\Exception\ModelNotFoundException;
+use TijmenWierenga\Project\Common\Domain\Event\EventStore;
+use TijmenWierenga\Project\Common\Domain\Event\EventStream;
+use TijmenWierenga\Project\Common\Domain\Exception\ModelNotFoundException;
 use TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog\WorkLog;
 use TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog\WorkLogId;
 use TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog\WorkLogRepository;

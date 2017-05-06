@@ -4,7 +4,7 @@ namespace TijmenWierenga\Project\Tests\Timesheets\Domain\Model\WorkLog;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
-use TijmenWierenga\Project\Shared\Domain\Event\EventStream;
+use TijmenWierenga\Project\Common\Domain\Event\EventStream;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserId;
 use TijmenWierenga\Project\Timesheets\Domain\Model\ValueObject\TimeFrame;
 use TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog\WorkLog;

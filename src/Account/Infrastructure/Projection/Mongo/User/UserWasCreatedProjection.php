@@ -2,9 +2,9 @@
 namespace TijmenWierenga\Project\Account\Infrastructure\Projection\Mongo\User;
 
 use MongoDB\Client;
-use TijmenWierenga\Project\Shared\Domain\Event\DomainEvent;
+use TijmenWierenga\Project\Common\Domain\Event\DomainEvent;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserWasCreated;
-use TijmenWierenga\Project\Shared\Domain\Projection\Projection;
+use TijmenWierenga\Project\Common\Domain\Projection\Projection;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>

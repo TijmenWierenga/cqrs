@@ -3,8 +3,8 @@ namespace TijmenWierenga\Project\Tests\Shared\Infrastructure\Bootstrap;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use TijmenWierenga\Project\Shared\Infrastructure\Bootstrap\App;
-use TijmenWierenga\Project\Shared\Infrastructure\Bootstrap\EnvironmentException;
+use TijmenWierenga\Project\Common\Infrastructure\Bootstrap\App;
+use TijmenWierenga\Project\Common\Infrastructure\Bootstrap\EnvironmentException;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>

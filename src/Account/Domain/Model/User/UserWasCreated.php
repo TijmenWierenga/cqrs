@@ -2,7 +2,7 @@
 namespace TijmenWierenga\Project\Account\Domain\Model\User;
 
 use DateTimeImmutable;
-use TijmenWierenga\Project\Shared\Domain\Event\DomainEvent;
+use TijmenWierenga\Project\Common\Domain\Event\DomainEvent;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>

@@ -1,10 +1,10 @@
 <?php
-namespace TijmenWierenga\Project\Shared\Infrastructure\Event;
+namespace TijmenWierenga\Project\Common\Infrastructure\Event;
 
 use NilPortugues\Serializer\Serializer;
 use Predis\Client;
-use TijmenWierenga\Project\Shared\Domain\Event\EventStore;
-use TijmenWierenga\Project\Shared\Domain\Event\EventStream;
+use TijmenWierenga\Project\Common\Domain\Event\EventStore;
+use TijmenWierenga\Project\Common\Domain\Event\EventStream;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>

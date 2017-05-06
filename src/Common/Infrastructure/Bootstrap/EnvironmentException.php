@@ -1,5 +1,5 @@
 <?php
-namespace TijmenWierenga\Project\Shared\Infrastructure\Bootstrap;
+namespace TijmenWierenga\Project\Common\Infrastructure\Bootstrap;
 
 use RuntimeException;
 

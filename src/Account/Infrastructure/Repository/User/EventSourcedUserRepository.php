@@ -1,9 +1,9 @@
 <?php
 namespace TijmenWierenga\Project\Account\Infrastructure\Repository\User;
 
-use TijmenWierenga\Project\Shared\Domain\Event\EventStore;
-use TijmenWierenga\Project\Shared\Domain\Event\EventStream;
-use TijmenWierenga\Project\Shared\Domain\Exception\ModelNotFoundException;
+use TijmenWierenga\Project\Common\Domain\Event\EventStore;
+use TijmenWierenga\Project\Common\Domain\Event\EventStream;
+use TijmenWierenga\Project\Common\Domain\Exception\ModelNotFoundException;
 use TijmenWierenga\Project\Account\Domain\Model\User\User;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserId;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserRepository;

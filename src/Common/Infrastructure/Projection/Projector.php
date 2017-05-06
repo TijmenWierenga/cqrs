@@ -1,11 +1,11 @@
 <?php
-namespace TijmenWierenga\Project\Shared\Infrastructure\Projection;
+namespace TijmenWierenga\Project\Common\Infrastructure\Projection;
 
-use TijmenWierenga\Project\Shared\Domain\Event\DomainEvent;
-use TijmenWierenga\Project\Shared\Domain\Event\EventStream;
-use TijmenWierenga\Project\Shared\Domain\Projection\Projection;
-use TijmenWierenga\Project\Shared\Domain\Projection\ProjectionException;
-use TijmenWierenga\Project\Shared\Domain\Projection\Projector as ProjectorInterface;
+use TijmenWierenga\Project\Common\Domain\Event\DomainEvent;
+use TijmenWierenga\Project\Common\Domain\Event\EventStream;
+use TijmenWierenga\Project\Common\Domain\Projection\Projection;
+use TijmenWierenga\Project\Common\Domain\Projection\ProjectionException;
+use TijmenWierenga\Project\Common\Domain\Projection\Projector as ProjectorInterface;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
