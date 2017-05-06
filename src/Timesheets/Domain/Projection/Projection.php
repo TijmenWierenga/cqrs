@@ -1,7 +1,7 @@
 <?php
 namespace TijmenWierenga\Project\Timesheets\Domain\Projection;
 
-use TijmenWierenga\Project\Timesheets\Domain\Event\DomainEvent;
+use TijmenWierenga\Project\Shared\Domain\Event\DomainEvent;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>

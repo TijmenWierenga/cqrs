@@ -3,7 +3,7 @@
 namespace TijmenWierenga\Project\Timesheets\Domain\Projection;
 
 
-use TijmenWierenga\Project\Timesheets\Domain\Event\EventStream;
+use TijmenWierenga\Project\Shared\Domain\Event\EventStream;
 
 interface Projector
 {

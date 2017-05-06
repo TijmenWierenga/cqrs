@@ -2,7 +2,7 @@
 namespace TijmenWierenga\Project\Tests\Timesheets\Domain\Model\User;
 
 use PHPUnit\Framework\TestCase;
-use TijmenWierenga\Project\Timesheets\Domain\Event\EventStream;
+use TijmenWierenga\Project\Shared\Domain\Event\EventStream;
 use TijmenWierenga\Project\Account\Domain\Model\User\User;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserId;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserWasCreated;

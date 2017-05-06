@@ -1,7 +1,6 @@
 <?php
 namespace TijmenWierenga\Project\Timesheets\Infrastructure\Bootstrap;
 
-use Assert\Assertion;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;

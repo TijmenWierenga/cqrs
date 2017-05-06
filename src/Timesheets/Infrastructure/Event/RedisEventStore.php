@@ -1,11 +1,10 @@
 <?php
 namespace TijmenWierenga\Project\Timesheets\Infrastructure\Event;
 
-use JMS\Serializer\SerializerInterface;
 use NilPortugues\Serializer\Serializer;
 use Predis\Client;
-use TijmenWierenga\Project\Timesheets\Domain\Event\EventStore;
-use TijmenWierenga\Project\Timesheets\Domain\Event\EventStream;
+use TijmenWierenga\Project\Shared\Domain\Event\EventStore;
+use TijmenWierenga\Project\Shared\Domain\Event\EventStream;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>

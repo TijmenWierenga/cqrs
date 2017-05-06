@@ -1,5 +1,5 @@
 <?php
-namespace TijmenWierenga\Project\Timesheets\Domain\Event;
+namespace TijmenWierenga\Project\Shared\Domain\Event;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>

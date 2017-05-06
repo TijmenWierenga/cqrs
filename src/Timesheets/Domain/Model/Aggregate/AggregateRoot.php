@@ -3,7 +3,7 @@
 namespace TijmenWierenga\Project\Timesheets\Domain\Model\Aggregate;
 
 use ReflectionClass;
-use TijmenWierenga\Project\Timesheets\Domain\Event\DomainEvent;
+use TijmenWierenga\Project\Shared\Domain\Event\DomainEvent;
 
 /**
  * @author Tijmen Wierenga <tijmen.wierenga@devmob.com>

@@ -1,7 +1,7 @@
 <?php
 namespace TijmenWierenga\Project\Timesheets\Domain\Model\Aggregate;
 
-use TijmenWierenga\Project\Timesheets\Domain\Event\EventStream;
+use TijmenWierenga\Project\Shared\Domain\Event\EventStream;
 
 interface EventSourcedAggregateRoot
 {

@@ -1,8 +1,8 @@
 <?php
 namespace TijmenWierenga\Project\Timesheets\Infrastructure\Projection;
 
-use TijmenWierenga\Project\Timesheets\Domain\Event\DomainEvent;
-use TijmenWierenga\Project\Timesheets\Domain\Event\EventStream;
+use TijmenWierenga\Project\Shared\Domain\Event\DomainEvent;
+use TijmenWierenga\Project\Shared\Domain\Event\EventStream;
 use TijmenWierenga\Project\Timesheets\Domain\Projection\Projection;
 use TijmenWierenga\Project\Timesheets\Domain\Projection\ProjectionException;
 use TijmenWierenga\Project\Timesheets\Domain\Projection\Projector as ProjectorInterface;

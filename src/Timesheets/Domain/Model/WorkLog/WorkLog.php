@@ -2,7 +2,7 @@
 
 namespace TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog;
 
-use TijmenWierenga\Project\Timesheets\Domain\Event\EventStream;
+use TijmenWierenga\Project\Shared\Domain\Event\EventStream;
 use TijmenWierenga\Project\Timesheets\Domain\Model\Aggregate\AggregateRoot;
 use TijmenWierenga\Project\Timesheets\Domain\Model\Aggregate\EventSourcedAggregateRoot;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserId;
