@@ -7,7 +7,7 @@ use TijmenWierenga\Project\Common\Domain\Exception\ModelNotFoundException;
 use TijmenWierenga\Project\Account\Domain\Model\User\User;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserId;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserRepository;
-use TijmenWierenga\Project\Timesheets\Domain\Projection\Projector;
+use TijmenWierenga\Project\Common\Domain\Projection\Projector;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>

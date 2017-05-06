@@ -1,5 +1,5 @@
 <?php
-namespace TijmenWierenga\Project\Tests\Shared\Infrastructure\Projection;
+namespace TijmenWierenga\Project\Tests\Common\Infrastructure\Projection;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;

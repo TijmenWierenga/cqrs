@@ -1,5 +1,5 @@
 <?php
-namespace TijmenWierenga\Project\Tests\Shared\Domain\Model\User;
+namespace TijmenWierenga\Project\Tests\Common\Domain\Model\User;
 
 use PHPUnit\Framework\TestCase;
 use TijmenWierenga\Project\Common\Domain\Event\EventStream;

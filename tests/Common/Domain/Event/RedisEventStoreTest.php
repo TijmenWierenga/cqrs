@@ -1,5 +1,5 @@
 <?php
-namespace TijmenWierenga\Project\Tests\Shared\Infrastructure\Event;
+namespace TijmenWierenga\Project\Tests\Common\Infrastructure\Event;
 
 use DateTimeImmutable;
 use NilPortugues\Serializer\Serializer;
