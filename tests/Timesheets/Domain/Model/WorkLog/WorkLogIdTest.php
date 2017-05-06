@@ -2,7 +2,6 @@
 namespace TijmenWierenga\Project\Tests\Timesheets\Domain\Model\WorkLog;
 
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\UuidInterface;
 use TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog\WorkLogId;
 
 /**

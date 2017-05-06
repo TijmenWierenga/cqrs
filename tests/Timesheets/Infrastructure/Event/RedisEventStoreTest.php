@@ -6,7 +6,7 @@ use NilPortugues\Serializer\Serializer;
 use NilPortugues\Serializer\Strategy\JsonStrategy;
 use PHPUnit\Framework\TestCase;
 use Predis\Client;
-use TijmenWierenga\Project\Timesheets\Domain\Model\User\UserId;
+use TijmenWierenga\Project\Account\Domain\Model\User\UserId;
 use TijmenWierenga\Project\Timesheets\Infrastructure\Event\RedisEventStore;
 use TijmenWierenga\Project\Timesheets\Domain\Event\EventStore;
 use TijmenWierenga\Project\Timesheets\Domain\Event\EventStream;

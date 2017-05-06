@@ -1,5 +1,5 @@
 <?php
-namespace TijmenWierenga\Project\Timesheets\Domain\Model\User;
+namespace TijmenWierenga\Project\Account\Domain\Model\User;
 
 use TijmenWierenga\Project\Timesheets\Domain\Event\EventStream;
 use TijmenWierenga\Project\Timesheets\Domain\Model\Aggregate\AggregateRoot;

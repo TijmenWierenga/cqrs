@@ -3,7 +3,7 @@ namespace TijmenWierenga\Project\Tests\Timesheets\Domain\Model\WorkLog;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
-use TijmenWierenga\Project\Timesheets\Domain\Model\User\UserId;
+use TijmenWierenga\Project\Account\Domain\Model\User\UserId;
 use TijmenWierenga\Project\Timesheets\Domain\Model\ValueObject\TimeFrame;
 use TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog\WorkLogId;
 use TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog\WorkLogWasCreated;

@@ -4,7 +4,7 @@ namespace TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog;
 
 use DateTimeImmutable;
 use TijmenWierenga\Project\Timesheets\Domain\Event\DomainEvent;
-use TijmenWierenga\Project\Timesheets\Domain\Model\User\UserId;
+use TijmenWierenga\Project\Account\Domain\Model\User\UserId;
 use TijmenWierenga\Project\Timesheets\Domain\Model\ValueObject\TimeFrame;
 
 /**

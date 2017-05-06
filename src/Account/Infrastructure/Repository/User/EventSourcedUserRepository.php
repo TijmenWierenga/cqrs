@@ -1,12 +1,12 @@
 <?php
-namespace TijmenWierenga\Project\Timesheets\Infrastructure\Repository\User;
+namespace TijmenWierenga\Project\Account\Infrastructure\Repository\User;
 
 use TijmenWierenga\Project\Timesheets\Domain\Event\EventStore;
 use TijmenWierenga\Project\Timesheets\Domain\Event\EventStream;
 use TijmenWierenga\Project\Timesheets\Domain\Exception\ModelNotFoundException;
-use TijmenWierenga\Project\Timesheets\Domain\Model\User\User;
-use TijmenWierenga\Project\Timesheets\Domain\Model\User\UserId;
-use TijmenWierenga\Project\Timesheets\Domain\Model\User\UserRepository;
+use TijmenWierenga\Project\Account\Domain\Model\User\User;
+use TijmenWierenga\Project\Account\Domain\Model\User\UserId;
+use TijmenWierenga\Project\Account\Domain\Model\User\UserRepository;
 use TijmenWierenga\Project\Timesheets\Domain\Projection\Projector;
 
 /**

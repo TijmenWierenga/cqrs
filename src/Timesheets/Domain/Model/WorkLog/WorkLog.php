@@ -5,7 +5,7 @@ namespace TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog;
 use TijmenWierenga\Project\Timesheets\Domain\Event\EventStream;
 use TijmenWierenga\Project\Timesheets\Domain\Model\Aggregate\AggregateRoot;
 use TijmenWierenga\Project\Timesheets\Domain\Model\Aggregate\EventSourcedAggregateRoot;
-use TijmenWierenga\Project\Timesheets\Domain\Model\User\UserId;
+use TijmenWierenga\Project\Account\Domain\Model\User\UserId;
 use TijmenWierenga\Project\Timesheets\Domain\Model\ValueObject\TimeFrame;
 
 /**

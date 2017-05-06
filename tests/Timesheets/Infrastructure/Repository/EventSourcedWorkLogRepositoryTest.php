@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 use TijmenWierenga\Project\Timesheets\Domain\Event\EventStore;
 use TijmenWierenga\Project\Timesheets\Domain\Event\EventStream;
-use TijmenWierenga\Project\Timesheets\Domain\Model\User\UserId;
+use TijmenWierenga\Project\Account\Domain\Model\User\UserId;
 use TijmenWierenga\Project\Timesheets\Domain\Model\ValueObject\TimeFrame;
 use TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog\WorkLog;
 use TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog\WorkLogId;
