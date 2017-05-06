@@ -1,5 +1,5 @@
 <?php
-namespace TijmenWierenga\Project\Tests\Timesheets\Infrastructure\Projection;
+namespace TijmenWierenga\Project\Tests\Shared\Infrastructure\Projection;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
@@ -9,9 +9,9 @@ use TijmenWierenga\Project\Account\Domain\Model\User\UserWasCreated;
 use TijmenWierenga\Project\Timesheets\Domain\Model\ValueObject\TimeFrame;
 use TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog\WorkLogId;
 use TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog\WorkLogWasCreated;
-use TijmenWierenga\Project\Timesheets\Domain\Projection\Projection;
-use TijmenWierenga\Project\Timesheets\Domain\Projection\ProjectionException;
-use TijmenWierenga\Project\Timesheets\Infrastructure\Projection\Projector;
+use TijmenWierenga\Project\Shared\Domain\Projection\Projection;
+use TijmenWierenga\Project\Shared\Domain\Projection\ProjectionException;
+use TijmenWierenga\Project\Shared\Infrastructure\Projection\Projector;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>

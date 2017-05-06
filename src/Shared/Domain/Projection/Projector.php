@@ -1,6 +1,5 @@
 <?php
-
-namespace TijmenWierenga\Project\Timesheets\Domain\Projection;
+namespace TijmenWierenga\Project\Shared\Domain\Projection;
 
 
 use TijmenWierenga\Project\Shared\Domain\Event\EventStream;
