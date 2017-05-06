@@ -1,17 +1,30 @@
 services:
     timesheets.worklog.repository:
         class: TijmenWierenga\Project\Timesheets\Infrastructure\Repository\WorkLog\EventSourcedWorkLogRepository
-        arguments: ["@timesheets.event_store"]
+        arguments: ["@common.event_store"]
 
-    timesheets.event_store:
-        class: TijmenWierenga\Project\Timesheets\Infrastructure\Event\RedisEventStore
+    account.user.repository:
+        class: TijmenWierenga\Project\Account\Infrastructure\Repository\User
+        arguments: ["@common.event_store", "@common.projector"]
+
+    account.projection.user_was_created:
+        class: TijmenWierenga\Project\Account\Infrastructure\Projection\Mongo\User\UserWasCreatedProjection
+        arguments: ["@common.mongo.client"]
+        tags:
+            - { name: projection }
+
+    common.projector:
+        class: TijmenWierenga\Project\Common\Infrastructure\Projection\Projector
+
+    common.event_store:
+        class: TijmenWierenga\Project\Common\Infrastructure\Event\RedisEventStore
         autowire: true
-        arguments: ["@timesheets.redis.client", NilPortugues\Serializer\Serializer]
+        arguments: ["@common.redis.client", NilPortugues\Serializer\Serializer]
 
-    timesheets.redis.client:
+    common.redis.client:
         class: Predis\Client
         arguments: ["%redis_config%"]
 
-    timesheets.mongo.client:
+    common.mongo.client:
         class: MongoDB\Client
         arguments: ["%mongo_uri%"]
