@@ -38,10 +38,16 @@ class UserWasCreatedProjection implements Projection
     /**
      * Projects a given event to the read model
      *
-     * @param DomainEvent $event
+     * @param UserWasCreated $event
      */
     public function project(DomainEvent $event): void
     {
-        // TODO: Implement project() method.
+        $collection = $this->client->project->users;
+
+        $collection->insertOne([
+            '_id' => (string) $event->getUserId(),
+            'first_name' => $event->getFirstName(),
+            'last_name' => $event->getLastName()
+        ]);
     }
 }
