@@ -1,5 +1,5 @@
 <?php
-namespace TijmenWierenga\Project\Timesheets\Infrastructure\Bootstrap;
+namespace TijmenWierenga\Project\Shared\Infrastructure\Bootstrap;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
