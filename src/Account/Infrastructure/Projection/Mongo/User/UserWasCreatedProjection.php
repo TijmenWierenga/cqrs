@@ -1,10 +1,10 @@
 <?php
-namespace TijmenWierenga\Project\Timesheets\Infrastructure\Projection\Mongo\User;
+namespace TijmenWierenga\Project\Account\Infrastructure\Projection\Mongo\User;
 
 use MongoDB\Client;
-use TijmenWierenga\Project\Timesheets\Domain\Event\DomainEvent;
-use TijmenWierenga\Project\Timesheets\Domain\Model\User\UserWasCreated;
-use TijmenWierenga\Project\Timesheets\Domain\Projection\Projection;
+use TijmenWierenga\Project\Shared\Domain\Event\DomainEvent;
+use TijmenWierenga\Project\Account\Domain\Model\User\UserWasCreated;
+use TijmenWierenga\Project\Shared\Domain\Projection\Projection;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
