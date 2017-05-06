@@ -4,7 +4,7 @@ services:
         arguments: ["@common.event_store"]
 
     account.user.repository:
-        class: TijmenWierenga\Project\Account\Infrastructure\Repository\User
+        class: TijmenWierenga\Project\Account\Infrastructure\Repository\User\EventSourcedUserRepository
         arguments: ["@common.event_store", "@common.projector"]
 
     account.projection.user_was_created:
@@ -19,7 +19,7 @@ services:
     common.event_store:
         class: TijmenWierenga\Project\Common\Infrastructure\Event\RedisEventStore
         autowire: true
-        arguments: ["@common.redis.client", NilPortugues\Serializer\Serializer]
+        arguments: ["@common.redis.client", "@common.serializer"]
 
     common.redis.client:
         class: Predis\Client
@@ -28,3 +28,10 @@ services:
     common.mongo.client:
         class: MongoDB\Client
         arguments: ["%mongo_uri%"]
+
+    common.serializer:
+        class: NilPortugues\Serializer\Serializer
+        arguments: ["@common.serializer.strategy"]
+
+    common.serializer.strategy:
+        class: NilPortugues\Serializer\Strategy\JsonStrategy
