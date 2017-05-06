@@ -1,5 +1,5 @@
 <?php
-namespace TijmenWierenga\Project\Timesheets\Infrastructure\Event;
+namespace TijmenWierenga\Project\Shared\Infrastructure\Event;
 
 use NilPortugues\Serializer\Serializer;
 use Predis\Client;

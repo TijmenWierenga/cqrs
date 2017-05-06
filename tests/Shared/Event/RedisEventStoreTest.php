@@ -1,5 +1,5 @@
 <?php
-namespace TijmenWierenga\Project\Tests\Timesheets\Infrastructure\Event;
+namespace TijmenWierenga\Project\Tests\Shared\Infrastructure\Event;
 
 use DateTimeImmutable;
 use NilPortugues\Serializer\Serializer;
@@ -7,7 +7,7 @@ use NilPortugues\Serializer\Strategy\JsonStrategy;
 use PHPUnit\Framework\TestCase;
 use Predis\Client;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserId;
-use TijmenWierenga\Project\Timesheets\Infrastructure\Event\RedisEventStore;
+use TijmenWierenga\Project\Shared\Infrastructure\Event\RedisEventStore;
 use TijmenWierenga\Project\Shared\Domain\Event\EventStore;
 use TijmenWierenga\Project\Shared\Domain\Event\EventStream;
 use TijmenWierenga\Project\Timesheets\Domain\Model\ValueObject\TimeFrame;

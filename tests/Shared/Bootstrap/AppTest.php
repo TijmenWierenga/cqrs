@@ -1,5 +1,5 @@
 <?php
-namespace TijmenWierenga\Project\Tests\Timesheets\Infrastructure\Bootstrap;
+namespace TijmenWierenga\Project\Tests\Shared\Infrastructure\Bootstrap;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
