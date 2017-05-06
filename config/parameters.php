@@ -10,9 +10,7 @@ $container->setParameter('redis_config', [
 
 $container->setParameter('mongo_uri',
     sprintf(
-        'mongodb://%s:%s@%s:%s',
-        getenv('MONGO_USERNAME'),
-        getenv('MONGO_PASS'),
+        'mongodb://%s:%s',
         getenv('MONGO_HOST'),
         getenv('MONGO_PORT')
     )
