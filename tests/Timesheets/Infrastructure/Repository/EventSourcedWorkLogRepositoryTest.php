@@ -10,7 +10,7 @@ use TijmenWierenga\Project\Account\Domain\Model\User\UserId;
 use TijmenWierenga\Project\Timesheets\Domain\Model\ValueObject\TimeFrame;
 use TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog\WorkLog;
 use TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog\WorkLogId;
-use TijmenWierenga\Project\Timesheets\Domain\Exception\ModelNotFoundException;
+use TijmenWierenga\Project\Shared\Domain\Exception\ModelNotFoundException;
 use TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog\WorkLogWasCreated;
 use TijmenWierenga\Project\Timesheets\Infrastructure\Repository\WorkLog\EventSourcedWorkLogRepository;
 

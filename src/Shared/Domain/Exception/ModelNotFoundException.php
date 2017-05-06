@@ -1,5 +1,5 @@
 <?php
-namespace TijmenWierenga\Project\Timesheets\Domain\Exception;
+namespace TijmenWierenga\Project\Shared\Domain\Exception;
 
 use RuntimeException;
 use TijmenWierenga\Project\Timesheets\Domain\Model\Identifier\Id;
