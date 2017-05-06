@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use TijmenWierenga\Project\Common\Infrastructure\Bootstrap\CompilerPass\ProjectorCompilerPass;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
@@ -42,6 +43,7 @@ class App
         self::$container = new ContainerBuilder();
         $this->setParameters();
         $this->setServices();
+        $this->registerCompilerPasses();
 
         self::$container->compile();
     }
@@ -82,5 +84,12 @@ class App
             self::container(), new FileLocator(realpath(__DIR__ . '/../../../../config'))
         );
         $loader->load('parameters.php');
+    }
+
+    private function registerCompilerPasses()
+    {
+        /** @var ContainerBuilder $container */
+        $container = self::container();
+        $container->addCompilerPass(new ProjectorCompilerPass());
     }
 }
