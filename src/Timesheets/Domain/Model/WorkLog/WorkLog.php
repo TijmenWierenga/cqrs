@@ -3,8 +3,8 @@
 namespace TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog;
 
 use TijmenWierenga\Project\Common\Domain\Event\EventStream;
-use TijmenWierenga\Project\Timesheets\Domain\Model\Aggregate\AggregateRoot;
-use TijmenWierenga\Project\Timesheets\Domain\Model\Aggregate\EventSourcedAggregateRoot;
+use TijmenWierenga\Project\Common\Domain\Model\Aggregate\AggregateRoot;
+use TijmenWierenga\Project\Common\Domain\Model\Aggregate\EventSourcedAggregateRoot;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserId;
 use TijmenWierenga\Project\Timesheets\Domain\Model\ValueObject\TimeFrame;
 

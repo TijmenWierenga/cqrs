@@ -2,8 +2,8 @@
 namespace TijmenWierenga\Project\Account\Domain\Model\User;
 
 use TijmenWierenga\Project\Common\Domain\Event\EventStream;
-use TijmenWierenga\Project\Timesheets\Domain\Model\Aggregate\AggregateRoot;
-use TijmenWierenga\Project\Timesheets\Domain\Model\Aggregate\EventSourcedAggregateRoot;
+use TijmenWierenga\Project\Common\Domain\Model\Aggregate\AggregateRoot;
+use TijmenWierenga\Project\Common\Domain\Model\Aggregate\EventSourcedAggregateRoot;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>

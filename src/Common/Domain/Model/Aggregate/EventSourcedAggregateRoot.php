@@ -1,5 +1,5 @@
 <?php
-namespace TijmenWierenga\Project\Timesheets\Domain\Model\Aggregate;
+namespace TijmenWierenga\Project\Common\Domain\Model\Aggregate;
 
 use TijmenWierenga\Project\Common\Domain\Event\EventStream;
 
