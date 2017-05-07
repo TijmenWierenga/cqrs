@@ -1,6 +1,7 @@
 <?php
 namespace TijmenWierenga\Project\Tests\Common\Infrastructure\Event;
 
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 use TijmenWierenga\Project\Common\Domain\Event\DomainEvent;
@@ -28,5 +29,24 @@ class DomainEventPublisherTest extends TestCase
         $property->setAccessible(false);
 
         $this->assertContains($subscriber, $subscribers);
+
+        /** @var DomainEvent $event */
+        $event = new class implements DomainEvent {
+            public function occurredOn(): DateTimeImmutable
+            {
+                return new DateTimeImmutable();
+            }
+        };
+
+        $subscriber->expects($this->once())
+            ->method('isSubscribedTo')
+            ->with($event)
+            ->willReturn(true);
+
+        $subscriber->expects($this->once())
+            ->method('handle')
+            ->with($event);
+
+        $publisher->publish($event);
     }
 }
