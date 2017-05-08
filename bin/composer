@@ -3,4 +3,5 @@ docker run \
     -v $(pwd):/app \
     -u $(id -u) \
     composer/composer \
+    --ignore-platform-reqs \
     "$@"
