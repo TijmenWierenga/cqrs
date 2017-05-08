@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use TijmenWierenga\Project\Common\Domain\Event\DomainEventPublisher;
 use TijmenWierenga\Project\Common\Infrastructure\Bootstrap\CompilerPass\ProjectorCompilerPass;
 
 /**
@@ -49,6 +50,7 @@ class App
         $this->registerCompilerPasses();
 
         self::$container->compile();
+        $this->boot();
     }
 
     /**
@@ -95,10 +97,21 @@ class App
         $loader->load('parameters.php');
     }
 
-    private function registerCompilerPasses()
+    private function registerCompilerPasses(): void
     {
         /** @var ContainerBuilder $container */
         $container = self::container();
         $container->addCompilerPass(new ProjectorCompilerPass());
+    }
+
+    private function boot(): void
+    {
+        $this->registerDomainEventSubscribers();
+    }
+
+    private function registerDomainEventSubscribers(): void
+    {
+        $container = self::container();
+        DomainEventPublisher::instance()->subscribe($container->get('common.event.logger'));
     }
 }
