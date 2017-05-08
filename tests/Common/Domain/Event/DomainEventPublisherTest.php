@@ -18,7 +18,7 @@ class DomainEventPublisherTest extends TestCase
      */
     public function it_subscribes_domain_event_subscribers()
     {
-    	$publisher = new DomainEventPublisher();
+    	$publisher = DomainEventPublisher::instance();
     	/** @var DomainEventSubscriber|PHPUnit_Framework_MockObject_MockObject $subscriber */
     	$subscriber = $this->getMockBuilder(DomainEventSubscriber::class)->getMock();
 
@@ -48,5 +48,16 @@ class DomainEventPublisherTest extends TestCase
             ->with($event);
 
         $publisher->publish($event);
+    }
+
+    /**
+     * @test
+     */
+    public function it_always_returns_the_same_instance()
+    {
+    	$publisher = DomainEventPublisher::instance();
+    	$publisherAgain = DomainEventPublisher::instance();
+
+    	$this->assertSame($publisher, $publisherAgain);
     }
 }
