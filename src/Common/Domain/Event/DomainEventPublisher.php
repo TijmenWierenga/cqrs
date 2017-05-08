@@ -14,7 +14,7 @@ class DomainEventPublisher
     /**
      * @var DomainEventSubscriber[]
      */
-    private $subscribers;
+    private $subscribers = [];
 
     public static function instance(): self
     {

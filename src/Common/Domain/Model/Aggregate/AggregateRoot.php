@@ -4,6 +4,7 @@ namespace TijmenWierenga\Project\Common\Domain\Model\Aggregate;
 
 use ReflectionClass;
 use TijmenWierenga\Project\Common\Domain\Event\DomainEvent;
+use TijmenWierenga\Project\Common\Domain\Event\DomainEventPublisher;
 
 /**
  * @author Tijmen Wierenga <tijmen.wierenga@devmob.com>
@@ -21,6 +22,7 @@ class AggregateRoot
     protected function apply(DomainEvent $event): void
     {
         $this->record($event);
+        $this->publish($event);
 
         $eventShortName = (new ReflectionClass($event))->getShortName();
 
@@ -51,5 +53,10 @@ class AggregateRoot
     public function clearEvents(): void
     {
         $this->recordedEvents = [];
+    }
+
+    private function publish(DomainEvent $event)
+    {
+        DomainEventPublisher::instance()->publish($event);
     }
 }
