@@ -21,6 +21,11 @@ services:
         autowire: true
         arguments: ["@common.redis.client", "@common.serializer"]
 
+    common.event.logger:
+        class: TijmenWierenga\Project\Common\Infrastructure\Event\Subscriber\LogEventSubscriber
+        tags:
+            - { name: domain_event.subscriber }
+
     common.redis.client:
         class: Predis\Client
         arguments: ["%redis_config%"]
