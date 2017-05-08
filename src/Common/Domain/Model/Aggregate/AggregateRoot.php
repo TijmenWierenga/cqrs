@@ -58,7 +58,7 @@ class AggregateRoot
     /**
      * @param DomainEvent $event
      */
-    private function publish(DomainEvent $event)
+    private function publish(DomainEvent $event): void
     {
         DomainEventPublisher::instance()->publish($event);
     }
