@@ -23,6 +23,7 @@ services:
 
     common.event.logger:
         class: TijmenWierenga\Project\Common\Infrastructure\Event\Subscriber\LogEventSubscriber
+        arguments: ["@common.logger"]
         tags:
             - { name: domain_event.subscriber }
 
@@ -40,3 +41,13 @@ services:
 
     common.serializer.strategy:
         class: NilPortugues\Serializer\Strategy\JsonStrategy
+
+    common.logger:
+        class: Monolog\Logger
+        arguments: ["default"]
+
+    common.monolog.stream_handler:
+        class: Monolog\Handler\StreamHandler
+        arguments: ["%logger_dir%", "%logger_debug_level%"]
+        tags:
+            - { name: logger_handler }

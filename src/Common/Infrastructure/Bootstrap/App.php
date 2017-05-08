@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use TijmenWierenga\Project\Common\Domain\Event\DomainEventPublisher;
+use TijmenWierenga\Project\Common\Infrastructure\Bootstrap\CompilerPass\LoggerCompilerPass;
 use TijmenWierenga\Project\Common\Infrastructure\Bootstrap\CompilerPass\ProjectorCompilerPass;
 
 /**
@@ -102,6 +103,7 @@ class App
         /** @var ContainerBuilder $container */
         $container = self::container();
         $container->addCompilerPass(new ProjectorCompilerPass());
+        $container->addCompilerPass(new LoggerCompilerPass());
     }
 
     private function boot(): void

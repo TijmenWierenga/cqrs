@@ -1,8 +1,10 @@
 <?php
 namespace TijmenWierenga\Project\Common\Infrastructure\Event\Subscriber;
 
+use Psr\Log\LoggerInterface;
 use TijmenWierenga\Project\Common\Domain\Event\DomainEvent;
 use TijmenWierenga\Project\Common\Domain\Event\DomainEventSubscriber;
+use TijmenWierenga\Project\Common\Infrastructure\Bootstrap\App;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
@@ -10,13 +12,30 @@ use TijmenWierenga\Project\Common\Domain\Event\DomainEventSubscriber;
 class LogEventSubscriber implements DomainEventSubscriber
 {
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * LogEventSubscriber constructor.
+     * @param LoggerInterface $logger
+     */
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
+    /**
      * Handles a domain event
      *
      * @param DomainEvent $domainEvent
      */
     public function handle(DomainEvent $domainEvent): void
     {
-        dump('Handled: ' . get_class($domainEvent) . PHP_EOL);
+        $this->logger->info('Logged domain event', [
+            'event' => get_class($domainEvent),
+            'env' => App::environment()
+        ]);
     }
 
     /**

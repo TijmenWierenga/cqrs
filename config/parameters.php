@@ -1,4 +1,5 @@
 <?php
+use Monolog\Logger;
 use Symfony\Component\DependencyInjection\Reference;
 
 $container->setParameter('redis_config', [
@@ -15,3 +16,6 @@ $container->setParameter('mongo_uri',
         getenv('MONGO_PORT')
     )
 );
+
+$container->setParameter('logger_dir', __DIR__ . '/../var/logs/app.log');
+$container->setParameter('logger_debug_level', Logger::INFO);
