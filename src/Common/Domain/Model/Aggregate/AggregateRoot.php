@@ -55,6 +55,9 @@ class AggregateRoot
         $this->recordedEvents = [];
     }
 
+    /**
+     * @param DomainEvent $event
+     */
     private function publish(DomainEvent $event)
     {
         DomainEventPublisher::instance()->publish($event);

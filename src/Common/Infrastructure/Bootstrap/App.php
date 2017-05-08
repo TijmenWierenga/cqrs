@@ -36,6 +36,9 @@ class App
      */
     private static $container;
 
+    /**
+     * @param string $environment
+     */
     public function run(string $environment = 'prod'): void
     {
         $this->setEnvironment($environment);
@@ -48,6 +51,9 @@ class App
         self::$container->compile();
     }
 
+    /**
+     * @return ContainerInterface
+     */
     public static function container(): ContainerInterface
     {
         return self::$container;
@@ -61,6 +67,9 @@ class App
         return self::$environment;
     }
 
+    /**
+     * @param string $environment
+     */
     private function setEnvironment(string $environment): void
     {
         if (! in_array($environment, self::ENVIRONMENTS)) {
