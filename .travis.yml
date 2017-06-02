@@ -15,4 +15,4 @@ before_install:
   - composer install --ignore-platform-reqs
 
 script:
-  - docker-compose -T php "vendor/bin/phpunit"
+  - docker-compose exec -T php "vendor/bin/phpunit"
