@@ -15,4 +15,4 @@ before_install:
   - composer install --ignore-platform-reqs
 
 script:
-  - docker exec -it cqrs-dev "vendor/bin/phpunit"
+  - docker-compose -T php "vendor/bin/phpunit"
