@@ -12,7 +12,7 @@ env:
 before_install:
   - docker-compose build
   - docker-compose up -d
-  - docker exec -it cqrs-dev "composer install --ignore-platform-reqs"
+  - composer install
 
 script:
   - docker exec -it cqrs-dev "vendor/bin/phpunit"
