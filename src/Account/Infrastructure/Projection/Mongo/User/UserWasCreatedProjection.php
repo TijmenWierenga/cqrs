@@ -47,7 +47,8 @@ class UserWasCreatedProjection implements Projection
         $collection->insertOne([
             '_id' => (string) $event->getUserId(),
             'first_name' => $event->getFirstName(),
-            'last_name' => $event->getLastName()
+            'last_name' => $event->getLastName(),
+            'email' => $event->getEmail(),
         ]);
     }
 }

@@ -2,6 +2,7 @@
 namespace TijmenWierenga\Project\Account\Domain\Model\User;
 
 use DateTimeImmutable;
+use TijmenWierenga\Project\Account\Domain\Model\ValueObject\Email;
 use TijmenWierenga\Project\Common\Domain\Event\DomainEvent;
 
 /**
@@ -28,19 +29,25 @@ class UserWasCreated implements DomainEvent
      * @var string
      */
     private $lastName;
+    /**
+     * @var string
+     */
+    private $email;
 
     /**
      * UserWasCreated constructor.
      * @param UserId $userId
+     * @param string $email
      * @param string $firstName
      * @param string $lastName
      */
-    public function __construct(UserId $userId, string $firstName, string $lastName)
+    public function __construct(UserId $userId, string $email, string $firstName, string $lastName)
     {
         $this->occurredOn = new DateTimeImmutable();
         $this->userId = $userId;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
+        $this->email = $email;
     }
 
     public function occurredOn(): DateTimeImmutable
@@ -70,5 +77,13 @@ class UserWasCreated implements DomainEvent
     public function getLastName(): string
     {
         return $this->lastName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
     }
 }
