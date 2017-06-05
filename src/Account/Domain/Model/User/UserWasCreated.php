@@ -4,17 +4,14 @@ namespace TijmenWierenga\Project\Account\Domain\Model\User;
 use DateTimeImmutable;
 use TijmenWierenga\Project\Account\Domain\Model\ValueObject\Email;
 use TijmenWierenga\Project\Common\Domain\Event\DomainEvent;
+use TijmenWierenga\Project\Common\Domain\Event\DomainEventId;
+use TijmenWierenga\Project\Common\Domain\Event\PersistingDomainEvent;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
  */
-class UserWasCreated implements DomainEvent
+class UserWasCreated extends PersistingDomainEvent implements DomainEvent
 {
-    /**
-     * @var DateTimeImmutable
-     */
-    private $occurredOn;
-
     /**
      * @var UserId
      */
@@ -43,16 +40,11 @@ class UserWasCreated implements DomainEvent
      */
     public function __construct(UserId $userId, string $email, string $firstName, string $lastName)
     {
-        $this->occurredOn = new DateTimeImmutable();
+        parent::__construct();
         $this->userId = $userId;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
-    }
-
-    public function occurredOn(): DateTimeImmutable
-    {
-        return $this->occurredOn;
     }
 
     /**

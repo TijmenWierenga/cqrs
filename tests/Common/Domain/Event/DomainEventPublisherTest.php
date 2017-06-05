@@ -7,6 +7,7 @@ use PHPUnit_Framework_MockObject_MockObject;
 use TijmenWierenga\Project\Common\Domain\Event\DomainEvent;
 use TijmenWierenga\Project\Common\Domain\Event\DomainEventPublisher;
 use TijmenWierenga\Project\Common\Domain\Event\DomainEventSubscriber;
+use TijmenWierenga\Project\Common\Domain\Event\PersistingDomainEvent;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
@@ -31,11 +32,7 @@ class DomainEventPublisherTest extends TestCase
         $this->assertContains($subscriber, $subscribers);
 
         /** @var DomainEvent $event */
-        $event = new class implements DomainEvent {
-            public function occurredOn(): DateTimeImmutable
-            {
-                return new DateTimeImmutable();
-            }
+        $event = new class extends PersistingDomainEvent implements DomainEvent {
         };
 
         $subscriber->expects($this->once())

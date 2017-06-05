@@ -5,12 +5,13 @@ namespace TijmenWierenga\Project\Timesheets\Domain\Model\WorkLog;
 use DateTimeImmutable;
 use TijmenWierenga\Project\Common\Domain\Event\DomainEvent;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserId;
+use TijmenWierenga\Project\Common\Domain\Event\PersistingDomainEvent;
 use TijmenWierenga\Project\Timesheets\Domain\Model\ValueObject\TimeFrame;
 
 /**
  * @author Tijmen Wierenga <tijmen.wierenga@devmob.com>
  */
-class WorkLogWasCreated implements DomainEvent
+class WorkLogWasCreated extends PersistingDomainEvent implements DomainEvent
 {
     /**
      * @var TimeFrame
@@ -22,10 +23,6 @@ class WorkLogWasCreated implements DomainEvent
      */
     private $workLogId;
 
-    /**
-     * @var DateTimeImmutable
-     */
-    private $occurredOn;
     /**
      * @var UserId
      */
@@ -39,10 +36,10 @@ class WorkLogWasCreated implements DomainEvent
      */
     public function __construct(WorkLogId $workLogId, UserId $userId, TimeFrame $timeFrame)
     {
+        parent::__construct();
         $this->timeFrame = $timeFrame;
         $this->workLogId = $workLogId;
         $this->userId = $userId;
-        $this->occurredOn = new DateTimeImmutable();
     }
 
     /**
@@ -67,15 +64,5 @@ class WorkLogWasCreated implements DomainEvent
     public function getUserId(): UserId
     {
         return $this->userId;
-    }
-
-    /**
-     * Returns the date and time when the event occurred.
-     *
-     * @return DateTimeImmutable
-     */
-    public function occurredOn(): DateTimeImmutable
-    {
-        return $this->occurredOn;
     }
 }

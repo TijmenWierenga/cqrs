@@ -115,5 +115,6 @@ class App
     {
         $container = self::container();
         DomainEventPublisher::instance()->subscribe($container->get('common.event.logger'));
+        DomainEventPublisher::instance()->subscribe($container->get('common.event.persister'));
     }
 }
