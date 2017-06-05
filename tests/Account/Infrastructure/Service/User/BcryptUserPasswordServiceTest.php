@@ -3,7 +3,6 @@ namespace TijmenWierenga\Project\Tests\Account\Infrastructure\Service\User;
 
 use PHPUnit\Framework\TestCase;
 use TijmenWierenga\Project\Account\Domain\Model\User\InvalidPasswordException;
-use TijmenWierenga\Project\Account\Domain\Model\User\UserPasswordService;
 use TijmenWierenga\Project\Account\Infrastructure\Service\User\BcryptUserPasswordService;
 
 /**
@@ -19,7 +18,6 @@ class BcryptUserPasswordServiceTest extends TestCase
         $this->expectException(InvalidPasswordException::class);
 
     	$service = new BcryptUserPasswordService();
-    	$tooLessChars = bin2hex(random_bytes(floor(UserPasswordService::PASSWORD_MIN_CHARS / 2)));
-    	$service->hash($tooLessChars);
+    	$service->hash('123');
     }
 }
