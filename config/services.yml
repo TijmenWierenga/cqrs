@@ -1,7 +1,7 @@
 services:
     account.service.user.register:
         class: TijmenWierenga\Project\Account\Application\Service\User\RegisterUserService
-        arguments: ["@account.user.repository", "@account.user.data_store", "@account.user.data_transformer"]
+        arguments: ["@account.user.repository", "@account.user.data_store", "@account.user.data_transformer", "@account.user.password_factory"]
 
     account.user.data_transformer:
         class: TijmenWierenga\Project\Account\Application\DataTransformer\User\UserDTODataTransformer
@@ -13,6 +13,9 @@ services:
     account.user.repository:
         class: TijmenWierenga\Project\Account\Infrastructure\Repository\User\EventSourcedUserRepository
         arguments: ["@common.event_store", "@common.projector"]
+
+    account.user.password_factory:
+        class: TijmenWierenga\Project\Account\Infrastructure\Service\User\BcryptUserPasswordFactory
 
     account.user.data_store:
         class: TijmenWierenga\Project\Account\Infrastructure\DataStore\Mongo\UserDataStore

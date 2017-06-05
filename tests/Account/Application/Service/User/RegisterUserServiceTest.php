@@ -10,6 +10,7 @@ use TijmenWierenga\Project\Account\Domain\Model\User\User;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserAlreadyExistsException;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserDataStore;
 use TijmenWierenga\Project\Tests\Account\Testing\Repository\InMemoryUserRepository;
+use TijmenWierenga\Project\Tests\Account\Testing\Service\PlainTextUserPasswordService;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
@@ -24,6 +25,7 @@ class RegisterUserServiceTest extends TestCase
         $this->expectException(UserAlreadyExistsException::class);
         $userRepository = new InMemoryUserRepository();
         $userDataTransformer = new UserDTODataTransformer();
+        $userPasswordService = new PlainTextUserPasswordService();
         /** @var UserDataStore|PHPUnit_Framework_MockObject_MockObject $dataStore */
         $dataStore = $this->getMockBuilder(UserDataStore::class)->getMock();
 
@@ -32,7 +34,7 @@ class RegisterUserServiceTest extends TestCase
             ->with('tijmen@devmob.com')
             ->willReturn(true);
 
-    	$service = new RegisterUserService($userRepository, $dataStore, $userDataTransformer);
+    	$service = new RegisterUserService($userRepository, $dataStore, $userDataTransformer, $userPasswordService);
     	$service->register(new RegisterUserRequest(
     	    'Tijmen',
             'Wierenga',
@@ -49,6 +51,7 @@ class RegisterUserServiceTest extends TestCase
     {
         $userRepository = new InMemoryUserRepository();
         $userDataTransformer = new UserDTODataTransformer();
+        $userPasswordService = new PlainTextUserPasswordService();
         /** @var UserDataStore|PHPUnit_Framework_MockObject_MockObject $dataStore */
         $dataStore = $this->getMockBuilder(UserDataStore::class)->getMock();
 
@@ -57,7 +60,7 @@ class RegisterUserServiceTest extends TestCase
             ->with('tijmen@devmob.com')
             ->willReturn(false);
 
-        $service = new RegisterUserService($userRepository, $dataStore, $userDataTransformer);
+        $service = new RegisterUserService($userRepository, $dataStore, $userDataTransformer, $userPasswordService);
         $service->register(new RegisterUserRequest(
                 'Tijmen',
                 'Wierenga',

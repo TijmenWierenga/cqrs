@@ -35,7 +35,9 @@ class EventSourcedUserRepositoryTest extends TestCase
             ->with($this->isInstanceOf(EventStream::class));
 
     	$repository = new EventSourcedUserRepository($eventStore, $projector);
-    	$user = $repository->save(User::new(UserId::new(), new Email('john.doe@example.com'), 'John', 'Doe'));
+    	$user = $repository->save(
+    	    User::new(UserId::new(), new Email('john.doe@example.com'), 'John', 'Doe', 'a-password')
+        );
 
     	$this->assertInstanceOf(User::class, $user);
     }
