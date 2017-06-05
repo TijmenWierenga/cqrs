@@ -15,4 +15,11 @@ interface DomainEvent
      * @return DateTimeImmutable
      */
     public function occurredOn(): DateTimeImmutable;
+
+    /**
+     * Returns the unique ID of the event.
+     *
+     * @return DomainEventId
+     */
+    public function getId(): DomainEventId;
 }

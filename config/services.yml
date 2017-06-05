@@ -32,6 +32,14 @@ services:
         autowire: true
         arguments: ["@common.redis.client", "@common.serializer"]
 
+    common.event.persister:
+        class: TijmenWierenga\Project\Common\Infrastructure\Event\Subscriber\PersistDomainEventSubscriber
+        arguments: ["@common.persisting_event_store"]
+
+    common.persisting_event_store:
+        class: TijmenWierenga\Project\Common\Infrastructure\Event\MongoPersistingEventStore
+        arguments: ["@common.mongo.client", "@common.serializer"]
+
     common.event.logger:
         class: TijmenWierenga\Project\Common\Infrastructure\Event\Subscriber\LogEventSubscriber
         arguments: ["@common.logger"]
