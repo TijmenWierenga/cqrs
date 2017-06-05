@@ -20,7 +20,8 @@
         "symfony/yaml": "^3.2",
         "symfony/config": "^3.2",
         "mongodb/mongodb": "^1.1",
-        "monolog/monolog": "^1.22"
+        "monolog/monolog": "^1.22",
+        "doctrine/collections": "^1.4"
     },
     "autoload": {
         "psr-4": {

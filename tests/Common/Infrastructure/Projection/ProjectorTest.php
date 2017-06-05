@@ -30,7 +30,7 @@ class ProjectorTest extends TestCase
         ];
 
         $userId = UserId::new();
-    	$event = new UserWasCreated($userId, 'Tijmen', 'Wierenga');
+    	$event = new UserWasCreated($userId, 't.wierenga@live.nl','Tijmen', 'Wierenga');
 
     	$projection->expects($this->once())
             ->method('listensTo')

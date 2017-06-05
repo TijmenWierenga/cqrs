@@ -38,8 +38,7 @@ class RedisEventStore implements EventStore
      */
     public function append(EventStream $eventStream): void
     {
-        foreach ($eventStream->getEvents() as $event)
-        {
+        foreach ($eventStream->getEvents() as $event) {
             $data = $this->serializer->serialize([
                 'created_at' => new \DateTimeImmutable(),
                 'data' => $this->serializer->serialize($event)

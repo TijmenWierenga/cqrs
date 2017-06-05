@@ -4,7 +4,7 @@ namespace TijmenWierenga\Project\Common\Domain\Event;
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
  */
-class DomainEventPublisher 
+class DomainEventPublisher
 {
     /**
      * @var self

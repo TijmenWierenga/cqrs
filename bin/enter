@@ -1,5 +1,4 @@
-docker exec \
-    -it \
-    -u $(id -u) \
-    cqrs-dev \
-    zsh
+docker-compose exec \
+    --user=$(id -u) \
+    php \
+    bash

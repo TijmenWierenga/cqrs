@@ -1,7 +1,6 @@
 <?php
 namespace TijmenWierenga\Project\Common\Domain\Projection;
 
-
 use TijmenWierenga\Project\Common\Domain\Event\EventStream;
 
 interface Projector

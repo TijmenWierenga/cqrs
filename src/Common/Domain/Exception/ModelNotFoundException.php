@@ -13,23 +13,28 @@ class ModelNotFoundException extends RuntimeException
      * @var string
      */
     private $model;
-    /**
-     * @var Id
-     */
-    private $id;
 
     /**
      * ModelNotFoundException constructor.
      * @param string $model
-     * @param Id $id
+     * @param string $message
      */
-    public function __construct(string $model, Id $id)
+    public function __construct(string $model, string $message)
     {
         $this->model = $model;
-        $this->id = $id;
+        $this->message = $message;
+    }
 
-        parent::__construct(
-            "{$model}\\{$id} could not be found"
-        );
+    public static function byId(string $model, Id $id): self
+    {
+        return new self($model, "{$model}\\{$id} could not be found");
+    }
+
+    /**
+     * @return string
+     */
+    public function getModel(): string
+    {
+        return $this->model;
     }
 }

@@ -1,4 +1,11 @@
 services:
+    account.service.user.register:
+        class: TijmenWierenga\Project\Account\Application\Service\User\RegisterUserService
+        arguments: ["@account.user.repository", "@account.user.data_store", "@account.user.data_transformer"]
+
+    account.user.data_transformer:
+        class: TijmenWierenga\Project\Account\Application\DataTransformer\User\UserDTODataTransformer
+
     timesheets.worklog.repository:
         class: TijmenWierenga\Project\Timesheets\Infrastructure\Repository\WorkLog\EventSourcedWorkLogRepository
         arguments: ["@common.event_store"]
@@ -6,6 +13,10 @@ services:
     account.user.repository:
         class: TijmenWierenga\Project\Account\Infrastructure\Repository\User\EventSourcedUserRepository
         arguments: ["@common.event_store", "@common.projector"]
+
+    account.user.data_store:
+        class: TijmenWierenga\Project\Account\Infrastructure\DataStore\Mongo\UserDataStore
+        arguments: ["@common.mongo.client"]
 
     account.projection.user_was_created:
         class: TijmenWierenga\Project\Account\Infrastructure\Projection\Mongo\User\UserWasCreatedProjection

@@ -43,15 +43,18 @@ class EventSourcedUserRepository implements UserRepository
     {
         $eventStream = $this->eventStore->getEventsFor($userId);
 
-        if (! count($eventStream->getEvents())) throw new ModelNotFoundException(User::class, $userId);
+        if (! count($eventStream->getEvents())) {
+            ModelNotFoundException::byId(User::class, $userId);
+        }
 
         return User::reconstitute($eventStream);
     }
 
     /**
      * @param User $user
+     * @return User
      */
-    public function save(User $user): void
+    public function save(User $user): User
     {
         $events = new EventStream($user->getUserId(), $user->recordedEvents());
 
@@ -59,5 +62,7 @@ class EventSourcedUserRepository implements UserRepository
         $user->clearEvents();
 
         $this->projector->project($events);
+
+        return $user;
     }
 }

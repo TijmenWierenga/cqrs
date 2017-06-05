@@ -1,6 +1,7 @@
 <?php
 namespace TijmenWierenga\Project\Account\Domain\Model\User;
 
+use TijmenWierenga\Project\Account\Domain\Model\ValueObject\Email;
 use TijmenWierenga\Project\Common\Domain\Event\EventStream;
 use TijmenWierenga\Project\Common\Domain\Model\Aggregate\AggregateRoot;
 use TijmenWierenga\Project\Common\Domain\Model\Aggregate\EventSourcedAggregateRoot;
@@ -14,6 +15,11 @@ class User extends AggregateRoot implements EventSourcedAggregateRoot
      * @var UserId
      */
     private $userId;
+
+    /**
+     * @var Email
+     */
+    private $email;
 
     /**
      * @var string
@@ -34,11 +40,18 @@ class User extends AggregateRoot implements EventSourcedAggregateRoot
         $this->userId = $userId;
     }
 
-    public static function new(UserId $userId, string $firstName, string $lastName)
+    /**
+     * @param UserId $userId
+     * @param string $email
+     * @param string $firstName
+     * @param string $lastName
+     * @return User
+     */
+    public static function new(UserId $userId, string $email, string $firstName, string $lastName)
     {
         $user = new self($userId);
 
-        $user->apply(new UserWasCreated($userId, $firstName, $lastName));
+        $user->apply(new UserWasCreated($userId, $email, $firstName, $lastName));
 
         return $user;
     }
@@ -67,10 +80,19 @@ class User extends AggregateRoot implements EventSourcedAggregateRoot
         return $this->lastName;
     }
 
+    /**
+     * @return Email
+     */
+    public function getEmail(): Email
+    {
+        return $this->email;
+    }
+
     protected function applyUserWasCreated(UserWasCreated $event): void
     {
         $this->firstName = $event->getFirstName();
         $this->lastName = $event->getLastName();
+        $this->email = new Email($event->getEmail());
     }
 
     /**
