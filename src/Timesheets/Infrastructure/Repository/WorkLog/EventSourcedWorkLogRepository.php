@@ -38,7 +38,7 @@ class EventSourcedWorkLogRepository implements WorkLogRepository
     {
         $eventStream = $this->eventStore->getEventsFor($workLogId);
 
-        if (! count($eventStream->getEvents())) throw new ModelNotFoundException(WorkLog::class, $workLogId);
+        if (! count($eventStream->getEvents())) throw ModelNotFoundException::byId(WorkLog::class, $workLogId);
 
         return WorkLog::reconstitute($eventStream);
     }
