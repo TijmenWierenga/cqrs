@@ -19,7 +19,7 @@ class UserTest extends TestCase
     public function a_user_can_be_created()
     {
         $userId = UserId::new();
-    	$user = User::new($userId, 't.wierenga@live.nl', 'Tijmen', 'Wierenga');
+    	$user = User::new($userId, 't.wierenga@live.nl', 'Tijmen', 'Wierenga', 'a-password');
 
     	$this->assertInstanceOf(User::class, $user);
     	$this->assertEquals($userId, $user->getUserId());
@@ -35,7 +35,7 @@ class UserTest extends TestCase
     {
         $userId = UserId::new();
         $events = [
-            new UserWasCreated($userId, 'john.doe@example.com', 'John', 'Doe')
+            new UserWasCreated($userId, 'john.doe@example.com', 'John', 'Doe', 'a-password')
         ];
 
     	$history = new EventStream((string) $userId, $events);

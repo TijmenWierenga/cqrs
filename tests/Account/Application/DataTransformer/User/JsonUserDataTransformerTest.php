@@ -16,7 +16,7 @@ class JsonUserDataTransformerTest extends TestCase
      */
     public function it_writes_a_user_to_json()
     {
-    	$user = User::new(UserId::new(), 'tijmen@devmob.com', 'Tijmen', 'Wierenga');
+    	$user = User::new(UserId::new(), 'tijmen@devmob.com', 'Tijmen', 'Wierenga', 'a-password');
     	$transformer = new JsonUserDataTransformer();
     	$transformer->write($user);
     	$json = $transformer->read();

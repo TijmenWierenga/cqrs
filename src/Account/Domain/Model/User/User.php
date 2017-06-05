@@ -32,6 +32,11 @@ class User extends AggregateRoot implements EventSourcedAggregateRoot
     private $lastName;
 
     /**
+     * @var string
+     */
+    private $password;
+
+    /**
      * User constructor.
      * @param UserId $userId
      */
@@ -45,13 +50,14 @@ class User extends AggregateRoot implements EventSourcedAggregateRoot
      * @param string $email
      * @param string $firstName
      * @param string $lastName
+     * @param string $password
      * @return User
      */
-    public static function new(UserId $userId, string $email, string $firstName, string $lastName)
+    public static function new(UserId $userId, string $email, string $firstName, string $lastName, string $password)
     {
         $user = new self($userId);
 
-        $user->apply(new UserWasCreated($userId, $email, $firstName, $lastName));
+        $user->apply(new UserWasCreated($userId, $email, $firstName, $lastName, $password));
 
         return $user;
     }
@@ -88,11 +94,20 @@ class User extends AggregateRoot implements EventSourcedAggregateRoot
         return $this->email;
     }
 
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
     protected function applyUserWasCreated(UserWasCreated $event): void
     {
         $this->firstName = $event->getFirstName();
         $this->lastName = $event->getLastName();
         $this->email = new Email($event->getEmail());
+        $this->password = $event->getPassword();
     }
 
     /**

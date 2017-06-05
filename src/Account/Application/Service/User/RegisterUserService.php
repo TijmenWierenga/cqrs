@@ -6,6 +6,7 @@ use TijmenWierenga\Project\Account\Domain\Model\User\User;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserAlreadyExistsException;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserDataStore;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserId;
+use TijmenWierenga\Project\Account\Domain\Model\User\UserPasswordService;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserRepository;
 use TijmenWierenga\Project\Account\Domain\Model\ValueObject\Email;
 
@@ -26,21 +27,28 @@ class RegisterUserService
      * @var UserDataTransformer
      */
     private $userDataTransformer;
+    /**
+     * @var UserPasswordService
+     */
+    private $userPasswordService;
 
     /**
      * RegisterUserService constructor.
      * @param UserRepository $userRepository
      * @param UserDataStore $userDataStore
      * @param UserDataTransformer $userDataTransformer
+     * @param UserPasswordService $userPasswordService
      */
     public function __construct(
         UserRepository $userRepository,
         UserDataStore $userDataStore,
-        UserDataTransformer $userDataTransformer
+        UserDataTransformer $userDataTransformer,
+        UserPasswordService $userPasswordService
     ) {
         $this->userRepository = $userRepository;
         $this->userDataStore = $userDataStore;
         $this->userDataTransformer = $userDataTransformer;
+        $this->userPasswordService = $userPasswordService;
     }
 
     public function register(RegisterUserRequest $request): void
@@ -55,7 +63,8 @@ class RegisterUserService
             UserId::new(),
             $email,
             $request->getFirstName(),
-            $request->getLastName()
+            $request->getLastName(),
+            $this->userPasswordService->hash($request->getPassword())
         );
 
         $this->userRepository->save($user);

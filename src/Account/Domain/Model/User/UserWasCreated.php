@@ -30,6 +30,10 @@ class UserWasCreated extends PersistingDomainEvent implements DomainEvent
      * @var string
      */
     private $email;
+    /**
+     * @var string
+     */
+    private $password;
 
     /**
      * UserWasCreated constructor.
@@ -37,14 +41,16 @@ class UserWasCreated extends PersistingDomainEvent implements DomainEvent
      * @param string $email
      * @param string $firstName
      * @param string $lastName
+     * @param string $password
      */
-    public function __construct(UserId $userId, string $email, string $firstName, string $lastName)
+    public function __construct(UserId $userId, string $email, string $firstName, string $lastName, string $password)
     {
         parent::__construct();
         $this->userId = $userId;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
+        $this->password = $password;
     }
 
     /**
@@ -77,5 +83,13 @@ class UserWasCreated extends PersistingDomainEvent implements DomainEvent
     public function getEmail(): string
     {
         return $this->email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
     }
 }

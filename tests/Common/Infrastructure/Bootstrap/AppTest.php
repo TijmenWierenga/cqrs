@@ -4,6 +4,7 @@ namespace TijmenWierenga\Project\Tests\Common\Infrastructure\Bootstrap;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use TijmenWierenga\Project\Account\Infrastructure\Service\User\BcryptUserPasswordService;
 use TijmenWierenga\Project\Common\Domain\Projection\Projector;
 use TijmenWierenga\Project\Common\Infrastructure\Bootstrap\App;
 use TijmenWierenga\Project\Common\Infrastructure\Bootstrap\CompilerPass\ProjectorCompilerPass;
