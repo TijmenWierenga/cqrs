@@ -11,6 +11,8 @@ use TijmenWierenga\Project\Common\Domain\Event\EventStream;
  */
 class RedisEventStore implements EventStore
 {
+    const RESOURCE_KEY = 'resource';
+
     /**
      * @var Client
      */
@@ -45,7 +47,7 @@ class RedisEventStore implements EventStore
             ]);
 
             $this->client->rpush(
-                'events:' . (string) $eventStream->getId(),
+                self::RESOURCE_KEY . ':' . (string) $eventStream->getId(),
                 $data
             );
         }
@@ -60,7 +62,7 @@ class RedisEventStore implements EventStore
     public function getEventsFor(string $id): EventStream
     {
         $serializedEvents = $this->client->lrange(
-            'events:' . $id,
+            self::RESOURCE_KEY . ':' . $id,
             0,
             -1
         );
