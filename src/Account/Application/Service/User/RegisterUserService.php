@@ -12,7 +12,7 @@ use TijmenWierenga\Project\Account\Domain\Model\ValueObject\Email;
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
  */
-class RegisterUserService 
+class RegisterUserService
 {
     /**
      * @var UserRepository

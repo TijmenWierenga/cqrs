@@ -2,7 +2,6 @@
 
 namespace TijmenWierenga\Project\Account\Domain\Model\User;
 
-
 use TijmenWierenga\Project\Account\Domain\Model\ValueObject\Email;
 
 interface UserDataStore

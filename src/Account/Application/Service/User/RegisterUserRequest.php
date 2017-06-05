@@ -4,7 +4,7 @@ namespace TijmenWierenga\Project\Account\Application\Service\User;
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
  */
-class RegisterUserRequest 
+class RegisterUserRequest
 {
     /**
      * @var string
@@ -35,8 +35,8 @@ class RegisterUserRequest
         string $lastName,
         string $email,
         string $password
-    )
-    {
+    ) {
+    
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;

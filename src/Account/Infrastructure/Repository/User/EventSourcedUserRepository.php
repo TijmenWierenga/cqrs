@@ -43,7 +43,9 @@ class EventSourcedUserRepository implements UserRepository
     {
         $eventStream = $this->eventStore->getEventsFor($userId);
 
-        if (! count($eventStream->getEvents())) ModelNotFoundException::byId(User::class, $userId);
+        if (! count($eventStream->getEvents())) {
+            ModelNotFoundException::byId(User::class, $userId);
+        }
 
         return User::reconstitute($eventStream);
     }

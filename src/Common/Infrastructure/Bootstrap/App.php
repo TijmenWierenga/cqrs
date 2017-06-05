@@ -13,7 +13,7 @@ use TijmenWierenga\Project\Common\Infrastructure\Bootstrap\CompilerPass\Projecto
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
  */
-class App 
+class App
 {
     /**
      * List of environments
