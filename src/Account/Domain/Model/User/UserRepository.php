@@ -17,6 +17,7 @@ interface UserRepository
 
     /**
      * @param User $user
+     * @return User
      */
-    public function save(User $user): void;
+    public function save(User $user): User;
 }

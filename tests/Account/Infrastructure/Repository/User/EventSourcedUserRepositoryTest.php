@@ -5,6 +5,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 use TijmenWierenga\Project\Account\Domain\Model\User\User;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserId;
+use TijmenWierenga\Project\Account\Domain\Model\ValueObject\Email;
 use TijmenWierenga\Project\Account\Infrastructure\Repository\User\EventSourcedUserRepository;
 use TijmenWierenga\Project\Common\Domain\Event\EventStore;
 use TijmenWierenga\Project\Common\Domain\Event\EventStream;
@@ -34,6 +35,8 @@ class EventSourcedUserRepositoryTest extends TestCase
             ->with($this->isInstanceOf(EventStream::class));
 
     	$repository = new EventSourcedUserRepository($eventStore, $projector);
-    	$repository->save(User::new(UserId::new(), 'John', 'Doe'));
+    	$user = $repository->save(User::new(UserId::new(), new Email('john.doe@example.com'), 'John', 'Doe'));
+
+    	$this->assertInstanceOf(User::class, $user);
     }
 }
