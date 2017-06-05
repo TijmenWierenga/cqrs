@@ -7,7 +7,7 @@ use TijmenWierenga\Project\Account\Domain\Model\User\UserPasswordService;
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
  */
-class BcryptUserPasswordFactory implements UserPasswordService
+class BcryptUserPasswordService implements UserPasswordService
 {
     /**
      * Creates a new password
@@ -17,7 +17,7 @@ class BcryptUserPasswordFactory implements UserPasswordService
      */
     public function hash(string $password): string
     {
-        if (! strlen($password > UserPasswordService::PASSWORD_MIN_CHARS)) {
+        if (! strlen($password < UserPasswordService::PASSWORD_MIN_CHARS)) {
             throw InvalidPasswordException::tooShort($password);
         }
 

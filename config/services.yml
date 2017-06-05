@@ -15,7 +15,7 @@ services:
         arguments: ["@common.event_store", "@common.projector"]
 
     account.user.password_factory:
-        class: TijmenWierenga\Project\Account\Infrastructure\Service\User\BcryptUserPasswordFactory
+        class: TijmenWierenga\Project\Account\Infrastructure\Service\User\BcryptUserPasswordService
 
     account.user.data_store:
         class: TijmenWierenga\Project\Account\Infrastructure\DataStore\Mongo\UserDataStore
