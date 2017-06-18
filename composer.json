@@ -27,7 +27,8 @@
         "mongodb/mongodb": "^1.1",
         "monolog/monolog": "^1.22",
         "doctrine/collections": "^1.4",
-        "ircmaxell/password-compat": "^1.0"
+        "ircmaxell/password-compat": "^1.0",
+        "symfony/console": "^3.3"
     },
     "autoload": {
         "psr-4": {
