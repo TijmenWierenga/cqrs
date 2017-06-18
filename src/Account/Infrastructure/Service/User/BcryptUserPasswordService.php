@@ -17,7 +17,7 @@ class BcryptUserPasswordService implements UserPasswordService
      */
     public function hash(string $password): string
     {
-        if (! strlen($password < UserPasswordService::PASSWORD_MIN_CHARS)) {
+        if (strlen($password) < UserPasswordService::PASSWORD_MIN_CHARS) {
             throw InvalidPasswordException::tooShort($password);
         }
 
