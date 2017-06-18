@@ -49,6 +49,7 @@ class UserWasCreatedProjection implements Projection
             'first_name' => $event->getFirstName(),
             'last_name' => $event->getLastName(),
             'email' => $event->getEmail(),
+            'password' => $event->getPassword()
         ]);
     }
 }
