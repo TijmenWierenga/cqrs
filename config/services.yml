@@ -27,6 +27,10 @@ services:
         tags:
             - { name: projection }
 
+    common.console.register_user:
+        class: TijmenWierenga\Project\Common\Infrastructure\Ui\Console\Command\Account\RegisterUserCommand
+        arguments: ["@account.service.user.register"]
+
     common.projector:
         class: TijmenWierenga\Project\Common\Infrastructure\Projection\Projector
 
