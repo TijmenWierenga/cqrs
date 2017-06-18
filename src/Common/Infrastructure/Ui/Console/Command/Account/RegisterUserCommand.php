@@ -63,5 +63,4 @@ class RegisterUserCommand extends Command
         $this->service->register($request);
         $output->writeln('User was registered');
     }
-
 }
