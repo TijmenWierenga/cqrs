@@ -1,6 +1,7 @@
 docker run \
     --rm \
     -v $(pwd):/app \
+    -v ~/.composer:/composer \
     -u $(id -u) \
     composer/composer \
     --ignore-platform-reqs \

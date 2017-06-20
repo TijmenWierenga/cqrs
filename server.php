@@ -23,4 +23,5 @@ $http = new Server($socket);
 $http->on('request', $app);
 
 $socket->listen(1337);
+echo "Listening on port 1337" . PHP_EOL;
 $loop->run();
