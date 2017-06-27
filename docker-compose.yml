@@ -15,8 +15,20 @@ services:
             - .:/var/www/project
         tty: true
         hostname: php
+        networks:
+          - cqrs
+          - default
         container_name: cqrs-dev
         env_file: common.env
+        entrypoint:
+          - php
+          - server.php
+        labels:
+          - "traefik.enable=true"
+          - "traefik.frontend.rule=Host:api.cqrs.dev"
+          - "traefik.port=1337"
+          - "traefik.protocol=http"
+          - "traefik.docker.network=api_default"
 
     redis:
         image: redis:latest
@@ -29,3 +41,23 @@ services:
         container_name: cqrs-mongo
         ports:
             - "27017:27017"
+
+    proxy:
+        build:
+            context: docker/proxy
+        ports:
+            - "80:80"
+            - "8080:8080"
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        networks:
+            - cqrs
+        command: --web --docker --docker.domain=cqrs.dev --docker.exposedbydefault=false --logLevel=DEBUG
+
+networks:
+  default:
+    driver: bridge
+  cqrs:
+    external:
+      name: api_default
+
