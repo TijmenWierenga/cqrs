@@ -8,5 +8,5 @@ require __DIR__ . '/vendor/autoload.php';
 
 $connection = new Connection();
 $server = new ReactPhpServer($connection);
-echo "Server is running on {$connection->getIpAddress()}:{$connection->getPort()}";
+echo "Server is running on {$connection->getIpAddress()}:{$connection->getPort()}" . PHP_EOL;
 $server->run();
