@@ -30,7 +30,8 @@
         "ircmaxell/password-compat": "^1.0",
         "symfony/console": "^3.3",
         "react/react": "^0.4.2",
-        "nikic/fast-route": "^1.2"
+        "nikic/fast-route": "^1.2",
+        "psr/http-message": "^1.0"
     },
     "autoload": {
         "psr-4": {
