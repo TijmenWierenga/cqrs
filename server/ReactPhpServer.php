@@ -1,15 +1,11 @@
 <?php
 namespace TijmenWierenga\Server;
 
-use FastRoute\Dispatcher;
-use FastRoute\Dispatcher as Router;
-use Psr\Container\ContainerInterface;
 use React\EventLoop\Factory;
 use React\Http\Request;
 use React\Http\Response;
 use React\Http\Server as ReactServer;
 use React\Socket\Server as ReactSocket;
-use TijmenWierenga\Project\Common\Infrastructure\Bootstrap\App;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\RequestHandler;
 
 /**
