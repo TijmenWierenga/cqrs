@@ -41,4 +41,9 @@ class Connection
     {
         return $this->port;
     }
+
+    public function __toString(): string
+    {
+        return $this->ipAddress . ":" . $this->port;
+    }
 }
