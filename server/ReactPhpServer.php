@@ -1,11 +1,12 @@
 <?php
 namespace TijmenWierenga\Server;
 
+use Psr\Http\Message\ServerRequestInterface;
 use React\EventLoop\Factory;
-use React\Http\Request;
 use React\Http\Response;
-use React\Http\Server as ReactServer;
-use React\Socket\Server as ReactSocket;
+use React\Http\Server as HttpServer;
+use React\Socket\Server as SocketServer;
+use TijmenWierenga\Project\Common\Infrastructure\Bootstrap\App;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\RequestHandler;
 
 /**
@@ -38,19 +39,17 @@ class ReactPhpServer implements Server
      */
     public function run(): void
     {
-        $app = function (Request $request, Response $response) {
-            // TODO: Add transformer from Request to ServerRequestInterface
-            $this->requestHandler->handle($request);
-            $response->end();
-        };
-
         $loop = Factory::create();
-        $socket = new ReactSocket($loop);
-        $http = new ReactServer($socket);
 
-        $http->on('request', $app);
+        $server = new HttpServer(function (ServerRequestInterface $request) {
+            return $this->requestHandler->handle($request);
+        });
 
-        $socket->listen($this->connection->getPort(), $this->connection->getIpAddress());
+        $socket = new SocketServer((string) $this->connection, $loop);
+        $server->listen($socket);
+
+        echo "Server is running on {$this->connection} in environment: " . App::environment();
+
         $loop->run();
     }
 }
