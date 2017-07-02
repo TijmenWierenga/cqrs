@@ -48,8 +48,6 @@ class ReactPhpServer implements Server
         $socket = new SocketServer((string) $this->connection, $loop);
         $server->listen($socket);
 
-        echo "Server is running on {$this->connection} in environment: " . App::environment();
-
         $loop->run();
     }
 }
