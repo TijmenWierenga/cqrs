@@ -4,7 +4,7 @@ namespace TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router;
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
  */
-class RouteDefinition 
+class RouteDefinition
 {
     /**
      * @var string

@@ -1,10 +1,13 @@
 <?php
 namespace TijmenWierenga\Project\Account\Application\Service\User;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\HttpRequest;
+
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
  */
-class RegisterUserRequest
+class RegisterUserRequest implements HttpRequest
 {
     /**
      * @var string
@@ -73,5 +76,23 @@ class RegisterUserRequest
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    /**
+     * Generates a Service Request from a HttpRequest (ServerRequestInterface)
+     *
+     * @param ServerRequestInterface $request
+     * @return self
+     */
+    public static function createFromHttpRequest(ServerRequestInterface $request): self
+    {
+        // TODO: Remove hardcoded values and use ServerRequest
+
+        return new self(
+            'Tijmen',
+            'Wierenga',
+            'tijmen@devmob.com',
+            '123456'
+        );
     }
 }
