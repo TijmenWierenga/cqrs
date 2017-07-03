@@ -6,6 +6,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use React\Http\Response;
+use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\Result;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\Route;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\Router;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\UriHelper;
@@ -50,19 +51,19 @@ class ContainerAwareRequestHandler implements RequestHandler
             )
         );
 
-        switch ($routeInfo[0]) {
-            case Dispatcher::NOT_FOUND:
+        switch ($routeInfo->getStatus()) {
+            case Result::NOT_FOUND:
                 return new Response(404, [
                     'content-type' => 'application/json'
                 ]);
                 break;
-            case Dispatcher::METHOD_NOT_ALLOWED:
+            case Result::METHOD_NOT_ALLOWED:
                 return new Response(405, [
                     'content-type' => 'application/json'
                 ]);
                 break;
             default:
-            case Dispatcher::FOUND:
+            case Result::FOUND:
                 // TODO: Call global middleware (before)
                 // TODO: Call route-specific middleware (before)
                 // TODO: Get handler service

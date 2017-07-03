@@ -1,8 +1,9 @@
 <?php
-
 namespace TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router;
 
-
+/**
+ * @author  Tijmen Wierenga <tijmen@devmob.com>
+ */
 class RouteHandler
 {
     /**
