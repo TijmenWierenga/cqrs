@@ -32,10 +32,14 @@ class SimpleRouter implements Router
 
     /**
      * @param Route $route
+     * @return Result
      */
-    public function find(Route $route)
+    public function find(Route $route): Result
     {
-        return $this->dispatcher->dispatch($route->getHttpMethod(), $route->getUri());
+        $routeInfo = $this->dispatcher->dispatch($route->getHttpMethod(), $route->getUri());
+        list($status, $routeDefinition, $vars) = $routeInfo;
+
+        return new Result($status, $routeDefinition, $vars);
     }
 
     private function registerRoutes()

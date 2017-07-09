@@ -13,7 +13,8 @@ interface RequestHandler
      * Handles a server request and returns an appropriate response
      *
      * @param ServerRequestInterface $request
+     * @param $streamData
      * @return ResponseInterface
      */
-    public function handle(ServerRequestInterface $request): ResponseInterface;
+    public function handle(ServerRequestInterface $request, StreamData $streamData): ResponseInterface;
 }

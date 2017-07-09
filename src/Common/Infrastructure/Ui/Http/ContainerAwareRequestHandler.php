@@ -1,12 +1,14 @@
 <?php
 namespace TijmenWierenga\Project\Common\Infrastructure\Ui\Http;
 
-use FastRoute\Dispatcher;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use React\Http\Response;
+use ReflectionParameter;
+use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\Result;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\Route;
+use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\RouteDefinition;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\Router;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\UriHelper;
 
@@ -39,9 +41,11 @@ class ContainerAwareRequestHandler implements RequestHandler
      * Handles a server request and returns an appropriate response
      *
      * @param ServerRequestInterface $request
+     * @param StreamData $streamData
      * @return ResponseInterface
+     * @internal param StreamData $data
      */
-    public function handle(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request, StreamData $streamData): ResponseInterface
     {
         $routeInfo = $this->router->find(
             new Route(
@@ -50,33 +54,83 @@ class ContainerAwareRequestHandler implements RequestHandler
             )
         );
 
-        switch ($routeInfo[0]) {
-            case Dispatcher::NOT_FOUND:
-                return new Response(404, [
-                    'content-type' => 'application/json'
-                ]);
+        switch ($routeInfo->getStatus()) {
+            case Result::NOT_FOUND:
+                return $this->notFound();
                 break;
-            case Dispatcher::METHOD_NOT_ALLOWED:
-                return new Response(405, [
-                    'content-type' => 'application/json'
-                ]);
+            case Result::METHOD_NOT_ALLOWED:
+                return $this->methodNotAllowed();
                 break;
             default:
-            case Dispatcher::FOUND:
-                // TODO: Call global middleware (before)
-                // TODO: Call route-specific middleware (before)
-                // TODO: Get handler service
-                // TODO: Use reflection to get the Request class
-                // TODO: Construct Request class
-                // TODO: Call Service Handler
-                // TODO: Transform Response based on accept header
-                // TODO: Call route-specific middleware (after)
-                // TODO: Call global middleware (after)
-
-                return new Response(200, [
-                    'content-type' => 'application/json'
-                ], json_encode("We found your endpoint"));
+            case Result::FOUND:
+                return $this->found($request, $streamData, $routeInfo->getRouteDefinition());
                 break;
         }
+    }
+
+    /**
+     * @return ResponseInterface
+     */
+    private function notFound(): ResponseInterface
+    {
+        return new Response(404, [
+            'content-type' => 'application/json'
+        ]);
+    }
+
+    /**
+     * @return ResponseInterface
+     */
+    private function methodNotAllowed(): ResponseInterface
+    {
+        return new Response(405, [
+            'content-type' => 'application/json'
+        ]);
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @param StreamData $streamData
+     * @param RouteDefinition $routeDefinition
+     * @return ResponseInterface
+     */
+    private function found(
+        ServerRequestInterface $request,
+        StreamData $streamData,
+        RouteDefinition $routeDefinition
+    ): ResponseInterface {
+        $routeHandler = $routeDefinition->getHandler();
+        // TODO: Call global middleware (before)
+        // TODO: Call route-specific middleware (before)
+        $service = $this->container->get($routeHandler->getServiceId());
+        $method = $routeHandler->getMethod();
+        $serviceRequest = $this->generateServiceRequest($request, $streamData, $service, $method);
+        $response = $service->$method($serviceRequest);
+        // TODO: Transform Response based on accept header
+        // TODO: Call route-specific middleware (after)
+        // TODO: Call global middleware (after)
+
+        return new Response(200, [
+            'Content-Type' => 'application/json'
+        ], json_encode($response));
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @param StreamData $streamData
+     * @param $service
+     * @param string $method
+     * @return object
+     */
+    private function generateServiceRequest(
+        ServerRequestInterface $request,
+        StreamData $streamData,
+        $service,
+        string $method
+    ) {
+        $requestInfo = new ReflectionParameter([$service, $method], 0);
+        $serviceRequest = (string) $requestInfo->getType();
+
+        return call_user_func_array([$serviceRequest, 'createFromHttpRequest'], [$request, $streamData]);
     }
 }

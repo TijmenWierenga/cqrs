@@ -1,10 +1,14 @@
 <?php
 namespace TijmenWierenga\Project\Account\Application\Service\User;
 
+use Psr\Http\Message\ServerRequestInterface;
+use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\HttpRequest;
+use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\StreamData;
+
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
  */
-class RegisterUserRequest
+class RegisterUserRequest implements HttpRequest
 {
     /**
      * @var string
@@ -73,5 +77,22 @@ class RegisterUserRequest
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    /**
+     * Generates a Service Request from a HttpRequest (ServerRequestInterface)
+     *
+     * @param ServerRequestInterface $request
+     * @param StreamData $data
+     * @return RegisterUserRequest
+     */
+    public static function createFromHttpRequest(ServerRequestInterface $request, StreamData $data): self
+    {
+        return new self(
+            $data->get('first_name'),
+            $data->get('last_name'),
+            $data->get('email'),
+            $data->get('password')
+        );
     }
 }
