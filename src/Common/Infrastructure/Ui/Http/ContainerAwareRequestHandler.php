@@ -99,16 +99,19 @@ class ContainerAwareRequestHandler implements RequestHandler
         StreamData $streamData,
         RouteDefinition $routeDefinition
     ): ResponseInterface {
+        // TODO: Wrap in try/catch block
         $routeHandler = $routeDefinition->getHandler();
         // TODO: Call global middleware (before)
         // TODO: Call route-specific middleware (before)
         $service = $this->container->get($routeHandler->getServiceId());
         $method = $routeHandler->getMethod();
         $serviceRequest = $this->generateServiceRequest($request, $streamData, $service, $method);
+        // TODO: Note to self: create controller and return response that can be transformed based on accept header
         $response = $service->$method($serviceRequest);
         // TODO: Transform Response based on accept header
         // TODO: Call route-specific middleware (after)
         // TODO: Call global middleware (after)
+        // TODO: Catch \Error and return 500 error response
 
         return new Response(200, [
             'Content-Type' => 'application/json'
