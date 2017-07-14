@@ -3,6 +3,7 @@ stream_set_blocking(STDOUT, false);
 
 use TijmenWierenga\Project\Common\Infrastructure\Bootstrap\App;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\ContainerAwareRequestHandler;
+use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\SimpleRouter;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\YamlRouteRegistry;
 use TijmenWierenga\Server\Connection;
 use TijmenWierenga\Server\ReactPhpServer;
@@ -16,7 +17,7 @@ $app->run(getenv('APP_ENV'));
 $routeRegistry = new YamlRouteRegistry([
     new File(realpath(__DIR__ . '/config/routes.yml'))
 ]);
-$router = new \TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\SimpleRouter($routeRegistry);
+$router = new SimpleRouter($routeRegistry);
 
 $connection = new Connection();
 $requestHandler = new ContainerAwareRequestHandler(App::container(), $router);

@@ -54,38 +54,27 @@ class ContainerAwareRequestHandler implements RequestHandler
             )
         );
 
-        switch ($routeInfo->getStatus()) {
-            case Result::NOT_FOUND:
-                return $this->notFound();
-                break;
-            case Result::METHOD_NOT_ALLOWED:
-                return $this->methodNotAllowed();
-                break;
-            default:
-            case Result::FOUND:
-                return $this->found($request, $streamData, $routeInfo->getRouteDefinition());
-                break;
+        try {
+            switch ($routeInfo->getStatus()) {
+                case Result::NOT_FOUND:
+                    throw HttpException::notFound();
+                    break;
+                case Result::METHOD_NOT_ALLOWED:
+                    throw HttpException::methodNotAllowed();
+                    break;
+                default:
+                case Result::FOUND:
+                    return $this->found($request, $streamData, $routeInfo->getRouteDefinition());
+                    break;
+            }
+        } catch (HttpException $e) {
+            // TODO: Transform response based on content type
+            return new Response(
+                $e->getStatusCode(),
+                ['Content-Type' => 'application/json'],
+                json_encode($e->getStatusPhrase())
+            );
         }
-    }
-
-    /**
-     * @return ResponseInterface
-     */
-    private function notFound(): ResponseInterface
-    {
-        return new Response(404, [
-            'content-type' => 'application/json'
-        ]);
-    }
-
-    /**
-     * @return ResponseInterface
-     */
-    private function methodNotAllowed(): ResponseInterface
-    {
-        return new Response(405, [
-            'content-type' => 'application/json'
-        ]);
     }
 
     /**
