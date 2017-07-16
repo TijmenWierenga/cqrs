@@ -7,7 +7,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use React\Http\Response;
 use ReflectionParameter;
-use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\Result;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\Route;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\RouteDefinition;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\Router;
