@@ -1,6 +1,7 @@
 <?php
 namespace TijmenWierenga\Project\Common\Infrastructure\Ui\Http;
 
+use Exception;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -47,32 +48,22 @@ class ContainerAwareRequestHandler implements RequestHandler
      */
     public function handle(ServerRequestInterface $request, StreamData $streamData): ResponseInterface
     {
-        $routeInfo = $this->router->find(
-            new Route(
-                $request->getMethod(),
-                UriHelper::stripQuery($request->getUri()->getPath())
-            )
-        );
-
         try {
-            switch ($routeInfo->getStatus()) {
-                case Result::NOT_FOUND:
-                    throw HttpException::notFound();
-                    break;
-                case Result::METHOD_NOT_ALLOWED:
-                    throw HttpException::methodNotAllowed();
-                    break;
-                default:
-                case Result::FOUND:
-                    return $this->found($request, $streamData, $routeInfo->getRouteDefinition());
-                    break;
-            }
+            $routeDefinition = $this->getRouteDefinition($request->getMethod(), $request->getUri()->getPath());
+
+            return $this->handleRequest($request, $streamData, $routeDefinition);
         } catch (HttpException $e) {
             // TODO: Transform response based on content type
             return new Response(
                 $e->getStatusCode(),
                 ['Content-Type' => 'application/json'],
-                json_encode($e->getStatusPhrase())
+                json_encode($e->getData())
+            );
+        } catch (Exception $e) {
+            return new Response(
+                500,
+                ['Content-Type' => 'application/json'],
+                json_encode($e->getMessage())
             );
         }
     }
@@ -83,7 +74,7 @@ class ContainerAwareRequestHandler implements RequestHandler
      * @param RouteDefinition $routeDefinition
      * @return ResponseInterface
      */
-    private function found(
+    private function handleRequest(
         ServerRequestInterface $request,
         StreamData $streamData,
         RouteDefinition $routeDefinition
@@ -124,5 +115,17 @@ class ContainerAwareRequestHandler implements RequestHandler
         $serviceRequest = (string) $requestInfo->getType();
 
         return call_user_func_array([$serviceRequest, 'createFromHttpRequest'], [$request, $streamData]);
+    }
+
+    /**
+     * @param string $method
+     * @param string $path
+     * @return RouteDefinition
+     */
+    private function getRouteDefinition(string $method, string $path): RouteDefinition
+    {
+        return $this->router->find(
+            new Route($method, UriHelper::stripQuery($path))
+        );
     }
 }
