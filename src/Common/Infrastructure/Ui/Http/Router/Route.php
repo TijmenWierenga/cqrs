@@ -6,7 +6,7 @@ use Assert\Assertion;
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
  */
-class Route 
+class Route
 {
     const GET = 'GET';
     const POST = 'POST';

@@ -1,7 +1,6 @@
 <?php
 namespace TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router;
 
-
 /**
  * @package TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router
  */

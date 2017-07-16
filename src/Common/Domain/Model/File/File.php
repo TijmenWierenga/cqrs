@@ -6,7 +6,7 @@ use Assert\Assertion;
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
  */
-class File 
+class File
 {
     /**
      * @var string
