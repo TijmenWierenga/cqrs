@@ -15,7 +15,7 @@ class StreamDataFactory
      * @return StreamData
      * @throws StreamDataException
      */
-    public static function decode(ServerRequestInterface $request, $data): StreamData
+    public static function decode(ServerRequestInterface $request, $data = null): StreamData
     {
         if (! $request->hasHeader('Content-Type')) {
             throw StreamDataException::missingContentTypeHeader();
@@ -37,6 +37,13 @@ class StreamDataFactory
      */
     private static function parseJson($data): StreamData
     {
-        return new StreamData(json_decode($data, true));
+        $data = json_decode($data, true);
+
+        /** Cast data to empty array when there is no data available */
+        if (! $data) {
+            $data = [];
+        }
+
+        return new StreamData($data);
     }
 }
