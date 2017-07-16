@@ -9,6 +9,7 @@ use React\Promise\Promise;
 use React\Socket\Server as SocketServer;
 use TijmenWierenga\Project\Common\Infrastructure\Bootstrap\App;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\RequestHandler;
+use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\StreamData;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\StreamDataFactory;
 
 /**
@@ -45,11 +46,13 @@ class ReactPhpServer implements Server
 
         $server = new HttpServer(function (ServerRequestInterface $request) {
             return new Promise(function ($resolve, $reject) use ($request) {
-                $request->getBody()->on('data', function ($data) use ($request, &$response) {
-                    $response = $this->requestHandler->handle($request, StreamDataFactory::decode($request, $data));
+                $request->getBody()->on('data', function ($data) use (&$stream) {
+                    $stream = $data;
                 });
 
-                $request->getBody()->on('end', function () use ($resolve, &$response) {
+                $request->getBody()->on('end', function () use ($resolve, $request, &$stream) {
+                    $streamData = StreamDataFactory::decode($request, $stream);
+                    $response = $this->requestHandler->handle($request, $streamData);
                     $resolve($response);
                 });
 
