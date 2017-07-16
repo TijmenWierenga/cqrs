@@ -6,6 +6,9 @@ namespace TijmenWierenga\Server;
  */
 class Connection
 {
+    const DEFAULT_PORT = 1337;
+    const DEFAULT_IP_ADDRESS = '0.0.0.0';
+
     /**
      * @var string
      */
@@ -20,7 +23,7 @@ class Connection
      * @param string $ipAddress
      * @param int $port
      */
-    public function __construct(string $ipAddress = '0.0.0.0', int $port = 1337)
+    public function __construct(int $port = self::DEFAULT_PORT, string $ipAddress = self::DEFAULT_IP_ADDRESS)
     {
         $this->ipAddress = $ipAddress;
         $this->port = $port;
@@ -40,5 +43,10 @@ class Connection
     public function getPort(): int
     {
         return $this->port;
+    }
+
+    public function __toString(): string
+    {
+        return $this->ipAddress . ":" . $this->port;
     }
 }

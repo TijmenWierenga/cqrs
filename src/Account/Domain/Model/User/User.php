@@ -1,6 +1,7 @@
 <?php
 namespace TijmenWierenga\Project\Account\Domain\Model\User;
 
+use JsonSerializable;
 use TijmenWierenga\Project\Account\Domain\Model\ValueObject\Email;
 use TijmenWierenga\Project\Common\Domain\Event\EventStream;
 use TijmenWierenga\Project\Common\Domain\Model\Aggregate\AggregateRoot;
@@ -9,7 +10,7 @@ use TijmenWierenga\Project\Common\Domain\Model\Aggregate\EventSourcedAggregateRo
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
  */
-class User extends AggregateRoot implements EventSourcedAggregateRoot
+class User extends AggregateRoot implements EventSourcedAggregateRoot, JsonSerializable
 {
     /**
      * @var UserId
@@ -123,5 +124,22 @@ class User extends AggregateRoot implements EventSourcedAggregateRoot
         }
 
         return $user;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return [
+            "id" => (string) $this->getUserId(),
+            "first_name" => $this->getFirstName(),
+            "last_name" => $this->getLastName(),
+            "email" => (string) $this->getEmail()
+        ];
     }
 }

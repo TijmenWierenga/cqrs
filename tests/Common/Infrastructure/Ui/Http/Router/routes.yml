@@ -1,0 +1,9 @@
+user:
+    endpoints:
+        register:
+            method: POST
+            uri: /
+            handler:
+                id: account.service.user.register
+                method: register
+    middleware: ~

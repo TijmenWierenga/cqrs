@@ -51,6 +51,9 @@ class RegisterUserService
         $this->userPasswordService = $userPasswordService;
     }
 
+    /**
+     * @param RegisterUserRequest $request
+     */
     public function register(RegisterUserRequest $request): void
     {
         $email = new Email($request->getEmail());

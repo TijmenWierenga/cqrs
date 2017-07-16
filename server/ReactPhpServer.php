@@ -1,11 +1,16 @@
 <?php
 namespace TijmenWierenga\Server;
 
+use Psr\Http\Message\ServerRequestInterface;
 use React\EventLoop\Factory;
-use React\Http\Request;
 use React\Http\Response;
-use React\Http\Server as ReactServer;
-use React\Socket\Server as ReactSocket;
+use React\Http\Server as HttpServer;
+use React\Promise\Promise;
+use React\Socket\Server as SocketServer;
+use TijmenWierenga\Project\Common\Infrastructure\Bootstrap\App;
+use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\RequestHandler;
+use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\StreamData;
+use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\StreamDataFactory;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
@@ -16,14 +21,20 @@ class ReactPhpServer implements Server
      * @var Connection
      */
     private $connection;
+    /**
+     * @var RequestHandler
+     */
+    private $requestHandler;
 
     /**
      * ReactPhpServer constructor.
      * @param Connection $connection
+     * @param RequestHandler $requestHandler
      */
-    public function __construct(Connection $connection)
+    public function __construct(Connection $connection, RequestHandler $requestHandler)
     {
         $this->connection = $connection;
+        $this->requestHandler = $requestHandler;
     }
 
     /**
@@ -31,21 +42,36 @@ class ReactPhpServer implements Server
      */
     public function run(): void
     {
-        $app = function (Request $request, Response $response) {
-            $response->writeHead(200, [
-                'content-type' => 'text/html'
-            ]);
-            $response->write("This message indicates that the React PHP Server is running.");
-            $response->end();
-        };
-
         $loop = Factory::create();
-        $socket = new ReactSocket($loop);
-        $http = new ReactServer($socket);
 
-        $http->on('request', $app);
+        $server = new HttpServer(function (ServerRequestInterface $request) {
+            return new Promise(function ($resolve, $reject) use ($request) {
+                $request->getBody()->on('data', function ($data) use (&$stream) {
+                    $stream = $data;
+                });
 
-        $socket->listen($this->connection->getPort(), $this->connection->getIpAddress());
+                $request->getBody()->on('end', function () use ($resolve, $request, &$stream) {
+                    $streamData = StreamDataFactory::decode($request, $stream);
+                    $response = $this->requestHandler->handle($request, $streamData);
+                    $resolve($response);
+                });
+
+                $request->getBody()->on('error', function (\Exception $exception) use ($resolve) {
+                    $response = new Response(
+                        400,
+                        [
+                            'Content-Type' => 'application/json'
+                        ],
+                        json_encode($exception->getMessage())
+                    );
+                    $resolve($response);
+                });
+            });
+        });
+
+        $socket = new SocketServer((string) $this->connection, $loop);
+        $server->listen($socket);
+
         $loop->run();
     }
 }
