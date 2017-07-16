@@ -60,9 +60,9 @@ class ReactPhpServer implements Server
                     $response = new Response(
                         400,
                         [
-                            'Content-Type' => 'text/plain'
+                            'Content-Type' => 'application/json'
                         ],
-                        $exception->getMessage()
+                        json_encode($exception->getMessage())
                     );
                     $resolve($response);
                 });
