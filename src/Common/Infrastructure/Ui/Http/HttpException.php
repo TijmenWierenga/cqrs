@@ -16,18 +16,24 @@ class HttpException extends RuntimeException
      * @var string
      */
     private $statusPhrase;
+    /**
+     * @var array
+     */
+    private $data;
 
     /**
      * HttpException constructor.
      * @param int $statusCode
      * @param string $statusPhrase
+     * @param array|null $data
      */
-    public function __construct(int $statusCode, string $statusPhrase)
+    public function __construct(int $statusCode, string $statusPhrase, ?array $data = null)
     {
         $this->statusCode = $statusCode;
+        $this->statusPhrase = $statusPhrase;
+        $this->data = $data;
 
         parent::__construct($statusPhrase);
-        $this->statusPhrase = $statusPhrase;
     }
 
     /**
@@ -40,12 +46,15 @@ class HttpException extends RuntimeException
     }
 
     /**
+     * @param array $allowedMethods
      * @return HttpException
      */
-    public static function methodNotAllowed(): self
+    public static function methodNotAllowed(array $allowedMethods): self
     {
         /** TODO: Fetch HTTP Status codes from class constants */
-        return new self(405, "Method not allowed");
+        return new self(405, "Method not allowed", [
+            "allowed_methods" => $allowedMethods
+        ]);
     }
 
     /**
@@ -62,5 +71,13 @@ class HttpException extends RuntimeException
     public function getStatusPhrase(): string
     {
         return $this->statusPhrase;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getData(): ?array
+    {
+        return $this->data;
     }
 }
