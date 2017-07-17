@@ -6,4 +6,6 @@ user:
             handler:
                 id: account.service.user.register
                 method: register
-    middleware: ~
+            middleware:
+                before:
+                    - common.middleware.guest: ~
