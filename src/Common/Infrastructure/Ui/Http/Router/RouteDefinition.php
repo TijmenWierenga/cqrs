@@ -26,6 +26,10 @@ class RouteDefinition
      * @var string
      */
     private $method;
+    /**
+     * @var RouteMiddleware
+     */
+    private $middleware;
 
     /**
      * RouteDefinition constructor.
@@ -34,14 +38,22 @@ class RouteDefinition
      * @param string $group
      * @param string $uri
      * @param RouteHandler $handler
+     * @param RouteMiddleware $middleware
      */
-    public function __construct(string $name, string $method, string $group, string $uri, RouteHandler $handler)
-    {
+    public function __construct(
+        string $name,
+        string $method,
+        string $group,
+        string $uri,
+        RouteHandler $handler,
+        RouteMiddleware $middleware
+    ) {
         $this->group = $group;
         $this->uri = UriHelper::format($uri);
         $this->handler = $handler;
         $this->name = $name;
         $this->method = $method;
+        $this->middleware = $middleware;
     }
 
     /**
@@ -82,5 +94,13 @@ class RouteDefinition
     public function getMethod(): string
     {
         return $this->method;
+    }
+
+    /**
+     * @return RouteMiddleware
+     */
+    public function getMiddleware(): RouteMiddleware
+    {
+        return $this->middleware;
     }
 }
