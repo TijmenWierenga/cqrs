@@ -7,8 +7,11 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use React\Http\Response;
 use ReflectionParameter;
+use TijmenWierenga\Project\Common\Application\Middleware\Middleware;
+use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\MiddlewareHandler;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\Route;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\RouteDefinition;
+use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\RouteMiddleware;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\Router;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\UriHelper;
 
@@ -81,14 +84,14 @@ class ContainerAwareRequestHandler implements RequestHandler
         // TODO: Wrap in try/catch block
         $routeHandler = $routeDefinition->getHandler();
         // TODO: Call global middleware (before)
-        // TODO: Call route-specific middleware (before)
+        $this->handleMiddleware($request, $streamData, $routeDefinition->getMiddleware()->getBeforeMiddleware());
         $service = $this->container->get($routeHandler->getServiceId());
         $method = $routeHandler->getMethod();
         $serviceRequest = $this->generateServiceRequest($request, $streamData, $service, $method);
         // TODO: Note to self: create controller and return response that can be transformed based on accept header
         $response = $service->$method($serviceRequest);
         // TODO: Transform Response based on accept header
-        // TODO: Call route-specific middleware (after)
+        $this->handleMiddleware($request, $streamData, $routeDefinition->getMiddleware()->getAfterMiddleware());
         // TODO: Call global middleware (after)
         // TODO: Catch \Error and return 500 error response
 
@@ -126,5 +129,22 @@ class ContainerAwareRequestHandler implements RequestHandler
         return $this->router->find(
             new Route($method, UriHelper::stripQuery($path))
         );
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @param StreamData $streamData
+     * @param iterable|MiddlewareHandler[] $middlewareCollection
+     */
+    private function handleMiddleware(
+        ServerRequestInterface $request,
+        StreamData $streamData,
+        iterable $middlewareCollection
+    ): void {
+        foreach ($middlewareCollection as $handler) {
+            /** @var Middleware $service */
+            $service = $this->container->get($handler->getServiceId());
+            $service->handle($request, $streamData, ...$handler->getArguments());
+        }
     }
 }
