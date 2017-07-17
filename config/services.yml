@@ -77,3 +77,6 @@ services:
         arguments: ["%logger_dir%", "%logger_debug_level%"]
         tags:
             - { name: logger_handler }
+
+    common.middleware.guest:
+        class: TijmenWierenga\Project\Common\Application\Middleware\Guest
