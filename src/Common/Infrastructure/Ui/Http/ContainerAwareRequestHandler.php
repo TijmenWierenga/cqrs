@@ -1,6 +1,7 @@
 <?php
 namespace TijmenWierenga\Project\Common\Infrastructure\Ui\Http;
 
+use Error;
 use Exception;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -8,10 +9,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use React\Http\Response;
 use ReflectionParameter;
 use TijmenWierenga\Project\Common\Application\Middleware\Middleware;
+use TijmenWierenga\Project\Common\Infrastructure\Bootstrap\App;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\MiddlewareHandler;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\Route;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\RouteDefinition;
-use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\RouteMiddleware;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\Router;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\UriHelper;
 
@@ -28,6 +29,10 @@ class ContainerAwareRequestHandler implements RequestHandler
      * @var Router
      */
     private $router;
+    /**
+     * @var array
+     */
+    private $globalMiddleware;
 
     /**
      * ContainerAwareRequestHandler constructor.
@@ -38,6 +43,7 @@ class ContainerAwareRequestHandler implements RequestHandler
     {
         $this->container = $container;
         $this->router = $router;
+        $this->registerGlobalMiddleware();
     }
 
     /**
@@ -67,6 +73,12 @@ class ContainerAwareRequestHandler implements RequestHandler
                 ['Content-Type' => 'application/json'],
                 json_encode($e->getMessage())
             );
+        } catch (Error $e) {
+            return new Response(
+                400,
+                ['Content-Type' => 'application/json'],
+                json_encode($e->getMessage())
+            );
         }
     }
 
@@ -81,20 +93,29 @@ class ContainerAwareRequestHandler implements RequestHandler
         StreamData $streamData,
         RouteDefinition $routeDefinition
     ): ResponseInterface {
-        // TODO: Wrap in try/catch block
         $routeHandler = $routeDefinition->getHandler();
-        // TODO: Call global middleware (before)
-        $this->handleMiddleware($request, $streamData, $routeDefinition->getMiddleware()->getBeforeMiddleware());
+
+        $this->callMiddleware(
+            $request,
+            $streamData,
+            $routeDefinition->getMiddleware()->getBeforeMiddleware(),
+            $this->globalMiddleware['before']
+        );
+
         $service = $this->container->get($routeHandler->getServiceId());
         $method = $routeHandler->getMethod();
         $serviceRequest = $this->generateServiceRequest($request, $streamData, $service, $method);
         // TODO: Note to self: create controller and return response that can be transformed based on accept header
         $response = $service->$method($serviceRequest);
-        // TODO: Transform Response based on accept header
-        $this->handleMiddleware($request, $streamData, $routeDefinition->getMiddleware()->getAfterMiddleware());
-        // TODO: Call global middleware (after)
-        // TODO: Catch \Error and return 500 error response
 
+        $this->callMiddleware(
+            $request,
+            $streamData,
+            $this->globalMiddleware['after'],
+            $routeDefinition->getMiddleware()->getAfterMiddleware()
+        );
+
+        // TODO: Transform Response based on accept header
         return new Response(200, [
             'Content-Type' => 'application/json'
         ], json_encode($response));
@@ -134,6 +155,21 @@ class ContainerAwareRequestHandler implements RequestHandler
     /**
      * @param ServerRequestInterface $request
      * @param StreamData $streamData
+     * @param array ...$middlewareCollections
+     */
+    private function callMiddleware(
+        ServerRequestInterface $request,
+        StreamData $streamData,
+        ...$middlewareCollections
+    ): void {
+        foreach ($middlewareCollections as $middlewareCollection) {
+            $this->handleMiddleware($request, $streamData, $middlewareCollection);
+        }
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @param StreamData $streamData
      * @param iterable|MiddlewareHandler[] $middlewareCollection
      */
     private function handleMiddleware(
@@ -146,5 +182,41 @@ class ContainerAwareRequestHandler implements RequestHandler
             $service = $this->container->get($handler->getServiceId());
             $service->handle($request, $streamData, ...$handler->getArguments());
         }
+    }
+
+    private function registerGlobalMiddleware(): void
+    {
+        $this->globalMiddleware['before'] = $this->registerGlobalBeforeMiddleware();
+        $this->globalMiddleware['after'] = $this->registerGlobalAfterMiddleware();
+    }
+
+    /**
+     * Register all global before middleware here.
+     * For every middleware added, it will call the handle method with the parameters provided.
+     *
+     * @return array|MiddlewareHandler[]
+     */
+    private function registerGlobalBeforeMiddleware(): array
+    {
+        $middleware = [];
+
+        if (App::environment() === App::ENVIRONMENT_DEVELOPMENT) {
+            $middleware = array_merge($middleware, [
+                new MiddlewareHandler('common.middleware.log_request', [App::environment()])
+            ]);
+        }
+
+        return $middleware;
+    }
+
+    /**
+     * Register all global before middleware here.
+     * For every middleware added, it will call the handle method with the parameters provided.
+     *
+     * @return array
+     */
+    private function registerGlobalAfterMiddleware(): array
+    {
+        return [];
     }
 }
