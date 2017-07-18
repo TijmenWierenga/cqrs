@@ -24,7 +24,6 @@ class RegisterUserServiceTest extends TestCase
     {
         $this->expectException(UserAlreadyExistsException::class);
         $userRepository = new InMemoryUserRepository();
-        $userDataTransformer = new UserDTODataTransformer();
         $userPasswordService = new PlainTextUserPasswordService();
         /** @var UserDataStore|PHPUnit_Framework_MockObject_MockObject $dataStore */
         $dataStore = $this->getMockBuilder(UserDataStore::class)->getMock();
@@ -34,14 +33,13 @@ class RegisterUserServiceTest extends TestCase
             ->with('tijmen@devmob.com')
             ->willReturn(true);
 
-    	$service = new RegisterUserService($userRepository, $dataStore, $userDataTransformer, $userPasswordService);
-    	$service->register(new RegisterUserRequest(
-    	    'Tijmen',
+        $service = new RegisterUserService($userRepository, $dataStore, $userPasswordService);
+        $service->register(new RegisterUserRequest(
+            'Tijmen',
             'Wierenga',
             'tijmen@devmob.com',
             'a-password'
-            )
-        );
+        ));
     }
 
     /**
@@ -50,7 +48,6 @@ class RegisterUserServiceTest extends TestCase
     public function it_registers_a_user()
     {
         $userRepository = new InMemoryUserRepository();
-        $userDataTransformer = new UserDTODataTransformer();
         $userPasswordService = new PlainTextUserPasswordService();
         /** @var UserDataStore|PHPUnit_Framework_MockObject_MockObject $dataStore */
         $dataStore = $this->getMockBuilder(UserDataStore::class)->getMock();
@@ -60,18 +57,14 @@ class RegisterUserServiceTest extends TestCase
             ->with('tijmen@devmob.com')
             ->willReturn(false);
 
-        $service = new RegisterUserService($userRepository, $dataStore, $userDataTransformer, $userPasswordService);
-        $service->register(new RegisterUserRequest(
-                'Tijmen',
-                'Wierenga',
-                'tijmen@devmob.com',
-                'a-password'
-            )
-        );
+        $service = new RegisterUserService($userRepository, $dataStore, $userPasswordService);
+        $response = $service->register(new RegisterUserRequest(
+            'Tijmen',
+            'Wierenga',
+            'tijmen@devmob.com',
+            'a-password'
+        ));
 
-        /** @var User $user */
-        $user = $service->userDataTransformer()->read();
-
-        $this->assertEquals($user, $userRepository->find($user->getUserId()));
+        $this->assertEquals($response->getData(), $userRepository->find($response->getData()->getUserId()));
     }
 }

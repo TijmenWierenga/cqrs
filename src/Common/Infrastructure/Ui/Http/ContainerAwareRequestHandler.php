@@ -105,8 +105,8 @@ class ContainerAwareRequestHandler implements RequestHandler
         $service = $this->container->get($routeHandler->getServiceId());
         $method = $routeHandler->getMethod();
         $serviceRequest = $this->generateServiceRequest($request, $streamData, $service, $method);
-        // TODO: Note to self: create controller and return response that can be transformed based on accept header
-        $response = $service->$method($serviceRequest);
+        /** @var HttpResponse $serviceResponse */
+        $serviceResponse = $service->$method($serviceRequest);
 
         $this->callMiddleware(
             $request,
@@ -115,10 +115,7 @@ class ContainerAwareRequestHandler implements RequestHandler
             $routeDefinition->getMiddleware()->getAfterMiddleware()
         );
 
-        // TODO: Transform Response based on accept header
-        return new Response(200, [
-            'Content-Type' => 'application/json'
-        ], json_encode($response));
+        return ResponseFactory::generate($request, $serviceResponse);
     }
 
     /**

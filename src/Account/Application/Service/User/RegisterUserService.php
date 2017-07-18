@@ -13,7 +13,7 @@ use TijmenWierenga\Project\Account\Domain\Model\ValueObject\Email;
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
  */
-class RegisterUserService
+final class RegisterUserService
 {
     /**
      * @var UserRepository
@@ -24,10 +24,6 @@ class RegisterUserService
      */
     private $userDataStore;
     /**
-     * @var UserDataTransformer
-     */
-    private $userDataTransformer;
-    /**
      * @var UserPasswordService
      */
     private $userPasswordService;
@@ -36,25 +32,23 @@ class RegisterUserService
      * RegisterUserService constructor.
      * @param UserRepository $userRepository
      * @param UserDataStore $userDataStore
-     * @param UserDataTransformer $userDataTransformer
      * @param UserPasswordService $userPasswordService
      */
     public function __construct(
         UserRepository $userRepository,
         UserDataStore $userDataStore,
-        UserDataTransformer $userDataTransformer,
         UserPasswordService $userPasswordService
     ) {
         $this->userRepository = $userRepository;
         $this->userDataStore = $userDataStore;
-        $this->userDataTransformer = $userDataTransformer;
         $this->userPasswordService = $userPasswordService;
     }
 
     /**
      * @param RegisterUserRequest $request
+     * @return RegisterUserResponse
      */
-    public function register(RegisterUserRequest $request): void
+    public function register(RegisterUserRequest $request): RegisterUserResponse
     {
         $email = new Email($request->getEmail());
 
@@ -71,11 +65,7 @@ class RegisterUserService
         );
 
         $this->userRepository->save($user);
-        $this->userDataTransformer->write($user);
-    }
 
-    public function userDataTransformer(): UserDataTransformer
-    {
-        return $this->userDataTransformer;
+        return new RegisterUserResponse($user);
     }
 }
