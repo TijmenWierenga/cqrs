@@ -94,17 +94,28 @@ class ContainerAwareRequestHandler implements RequestHandler
         RouteDefinition $routeDefinition
     ): ResponseInterface {
         $routeHandler = $routeDefinition->getHandler();
-        $this->handleMiddleware($request, $streamData, $this->globalMiddleware['before']);
-        $this->handleMiddleware($request, $streamData, $routeDefinition->getMiddleware()->getBeforeMiddleware());
+
+        $this->callMiddleware(
+            $request,
+            $streamData,
+            $routeDefinition->getMiddleware()->getBeforeMiddleware(),
+            $this->globalMiddleware['before']
+        );
+
         $service = $this->container->get($routeHandler->getServiceId());
         $method = $routeHandler->getMethod();
         $serviceRequest = $this->generateServiceRequest($request, $streamData, $service, $method);
         // TODO: Note to self: create controller and return response that can be transformed based on accept header
         $response = $service->$method($serviceRequest);
-        // TODO: Transform Response based on accept header
-        $this->handleMiddleware($request, $streamData, $routeDefinition->getMiddleware()->getAfterMiddleware());
-        $this->handleMiddleware($request, $streamData, $this->globalMiddleware['after']);
 
+        $this->callMiddleware(
+            $request,
+            $streamData,
+            $this->globalMiddleware['after'],
+            $routeDefinition->getMiddleware()->getAfterMiddleware()
+        );
+
+        // TODO: Transform Response based on accept header
         return new Response(200, [
             'Content-Type' => 'application/json'
         ], json_encode($response));
@@ -139,6 +150,21 @@ class ContainerAwareRequestHandler implements RequestHandler
         return $this->router->find(
             new Route($method, UriHelper::stripQuery($path))
         );
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @param StreamData $streamData
+     * @param array ...$middlewareCollections
+     */
+    private function callMiddleware(
+        ServerRequestInterface $request,
+        StreamData $streamData,
+        ...$middlewareCollections
+    ): void {
+        foreach ($middlewareCollections as $middlewareCollection) {
+            $this->handleMiddleware($request, $streamData, $middlewareCollection);
+        }
     }
 
     /**
