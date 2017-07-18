@@ -80,3 +80,7 @@ services:
 
     common.middleware.guest:
         class: TijmenWierenga\Project\Common\Application\Middleware\Guest
+
+    common.middleware.log_request:
+        class: TijmenWierenga\Project\Common\Application\Middleware\LogRequest
+        arguments: ["@common.logger"]
