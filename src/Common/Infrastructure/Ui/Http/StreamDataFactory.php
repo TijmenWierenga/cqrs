@@ -17,10 +17,6 @@ class StreamDataFactory
      */
     public static function decode(ServerRequestInterface $request, $data = null): StreamData
     {
-        if (! $request->hasHeader('Content-Type')) {
-            throw StreamDataException::missingContentTypeHeader();
-        }
-
         switch ($request->getHeader('Content-Type')) {
             default:
             case 'application/json':
