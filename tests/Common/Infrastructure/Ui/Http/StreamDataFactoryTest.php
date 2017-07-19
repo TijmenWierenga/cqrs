@@ -23,32 +23,12 @@ class StreamDataFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_content_type_header_is_missing()
-    {
-        $this->expectException(StreamDataException::class);
-
-        $this->request->expects($this->once())
-            ->method('hasHeader')
-            ->with('Content-Type')
-            ->willReturn(false);
-
-        StreamDataFactory::decode($this->request, null);
-    }
-
-    /**
-     * @test
-     */
     public function it_creates_stream_data_from_json_http_request()
     {
         $data = json_encode([
             'name' => 'Tijmen',
             'age' => 30
         ]);
-
-        $this->request->expects($this->once())
-            ->method('hasHeader')
-            ->with('Content-Type')
-            ->willReturn(true);
 
         $this->request->expects($this->once())
             ->method('getHeader')
@@ -68,11 +48,6 @@ class StreamDataFactoryTest extends TestCase
     public function it_creates_stream_data_from_an_empty_stream()
     {
         $this->request->expects($this->once())
-            ->method('hasHeader')
-            ->with('Content-Type')
-            ->willReturn(true);
-
-        $this->request->expects($this->once())
             ->method('getHeader')
             ->with('Content-Type')
             ->willReturn('application/json');
@@ -81,5 +56,21 @@ class StreamDataFactoryTest extends TestCase
 
         $this->assertInstanceOf(StreamData::class, $streamData);
         $this->assertNull($streamData->get('name'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_stream_data_with_a_missing_content_type_header()
+    {
+        $this->request->expects($this->once())
+            ->method('getHeader')
+            ->with('Content-Type')
+            ->willReturn([]);
+
+        $streamData = StreamDataFactory::decode($this->request, json_encode(['name' => 'Tijmen']));
+
+        $this->assertInstanceOf(StreamData::class, $streamData);
+        $this->assertEquals('Tijmen', $streamData->get('name'));
     }
 }
