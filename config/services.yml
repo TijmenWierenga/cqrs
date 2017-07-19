@@ -3,6 +3,10 @@ services:
         class: TijmenWierenga\Project\Account\Application\Service\User\RegisterUserService
         arguments: ["@account.user.repository", "@account.user.data_store", "@account.user.password_factory"]
 
+    account.service.user.find:
+        class: TijmenWierenga\Project\Account\Application\Service\User\RetrieveUserService
+        arguments: ["@account.user.data_store"]
+
     account.user.data_transformer:
         class: TijmenWierenga\Project\Account\Application\DataTransformer\User\UserDTODataTransformer
 
