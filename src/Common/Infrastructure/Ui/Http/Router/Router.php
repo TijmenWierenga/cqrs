@@ -13,7 +13,7 @@ interface Router
 
     /**
      * @param Route $route
-     * @return RouteDefinition
+     * @return Match
      */
-    public function find(Route $route): RouteDefinition;
+    public function find(Route $route): Match;
 }
