@@ -27,7 +27,7 @@ abstract class ServiceResponse implements HttpResponse
      * @param $data
      * @param array $headers
      */
-    protected function __construct(int $statusCode, $data, array $headers = [])
+    protected function __construct(int $statusCode = 200, $data = [], array $headers = [])
     {
         $this->statusCode = $statusCode;
         $this->data = $data;
