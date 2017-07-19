@@ -2,7 +2,9 @@
 namespace TijmenWierenga\Project\Account\Infrastructure\DataStore\Mongo;
 
 use MongoDB\Client;
+use MongoDB\Collection;
 use TijmenWierenga\Project\Account\Domain\Model\User\UserDataStore as UserDataStoreInterface;
+use TijmenWierenga\Project\Account\Domain\Model\User\UserId;
 use TijmenWierenga\Project\Account\Domain\Model\ValueObject\Email;
 
 /**
@@ -10,10 +12,18 @@ use TijmenWierenga\Project\Account\Domain\Model\ValueObject\Email;
  */
 class UserDataStore implements UserDataStoreInterface
 {
+    const NAMESPACE = 'project';
+    const COLLECTION = 'users';
+
     /**
      * @var Client
      */
     private $client;
+
+    /**
+     * @var Collection
+     */
+    private $collection;
 
     /**
      * UserDataStore constructor.
@@ -22,6 +32,7 @@ class UserDataStore implements UserDataStoreInterface
     public function __construct(Client $client)
     {
         $this->client = $client;
+        $this->collection = $this->client->{self::NAMESPACE}->{self::COLLECTION};
     }
 
     /**
@@ -32,9 +43,19 @@ class UserDataStore implements UserDataStoreInterface
      */
     public function emailAlreadyExists(Email $email): bool
     {
-        $collection = $this->client->project->users;
-        $user = $collection->findOne(['email' => (string) $email]);
+        $user = $this->collection->findOne(['email' => (string) $email]);
 
         return !! $user;
+    }
+
+    /**
+     * Finds a user by Id
+     *
+     * @param UserId $userId
+     * @return mixed
+     */
+    public function find(UserId $userId)
+    {
+        return $this->collection->findOne(['_id' => (string) $userId]);
     }
 }
