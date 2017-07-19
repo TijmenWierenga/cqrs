@@ -84,9 +84,10 @@ class RegisterUserRequest implements HttpRequest
      *
      * @param ServerRequestInterface $request
      * @param StreamData $data
+     * @param array $vars
      * @return RegisterUserRequest
      */
-    public static function createFromHttpRequest(ServerRequestInterface $request, StreamData $data): self
+    public static function createFromHttpRequest(ServerRequestInterface $request, StreamData $data, array $vars): self
     {
         return new self(
             $data->get('first_name'),

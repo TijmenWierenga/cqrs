@@ -13,7 +13,12 @@ interface HttpRequest
      *
      * @param ServerRequestInterface $request
      * @param StreamData $streamData
+     * @param array $routeVars
      * @return HttpRequest
      */
-    public static function createFromHttpRequest(ServerRequestInterface $request, StreamData $streamData);
+    public static function createFromHttpRequest(
+        ServerRequestInterface $request,
+        StreamData $streamData,
+        array $routeVars
+    );
 }
