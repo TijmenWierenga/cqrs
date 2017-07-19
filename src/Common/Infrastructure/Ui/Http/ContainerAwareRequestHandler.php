@@ -10,6 +10,7 @@ use React\Http\Response;
 use ReflectionParameter;
 use TijmenWierenga\Project\Common\Application\Middleware\Middleware;
 use TijmenWierenga\Project\Common\Infrastructure\Bootstrap\App;
+use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\Match;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\MiddlewareHandler;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\Route;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\RouteDefinition;
@@ -57,9 +58,9 @@ class ContainerAwareRequestHandler implements RequestHandler
     public function handle(ServerRequestInterface $request, StreamData $streamData): ResponseInterface
     {
         try {
-            $routeDefinition = $this->getRouteDefinition($request->getMethod(), $request->getUri()->getPath());
+            $route = $this->matchRoute($request->getMethod(), $request->getUri()->getPath());
 
-            return $this->handleRequest($request, $streamData, $routeDefinition);
+            return $this->handleRequest($request, $streamData, $route);
         } catch (HttpException $e) {
             // TODO: Transform response based on content type
             return new Response(
@@ -85,14 +86,15 @@ class ContainerAwareRequestHandler implements RequestHandler
     /**
      * @param ServerRequestInterface $request
      * @param StreamData $streamData
-     * @param RouteDefinition $routeDefinition
+     * @param Match $match
      * @return ResponseInterface
      */
     private function handleRequest(
         ServerRequestInterface $request,
         StreamData $streamData,
-        RouteDefinition $routeDefinition
+        Match $match
     ): ResponseInterface {
+        $routeDefinition = $match->getRouteDefinition();
         $routeHandler = $routeDefinition->getHandler();
 
         $this->callMiddleware(
@@ -104,7 +106,7 @@ class ContainerAwareRequestHandler implements RequestHandler
 
         $service = $this->container->get($routeHandler->getServiceId());
         $method = $routeHandler->getMethod();
-        $serviceRequest = $this->generateServiceRequest($request, $streamData, $service, $method);
+        $serviceRequest = $this->generateServiceRequest($request, $streamData, $match->getVars(), $service, $method);
         /** @var HttpResponse $serviceResponse */
         $serviceResponse = $service->$method($serviceRequest);
 
@@ -121,6 +123,7 @@ class ContainerAwareRequestHandler implements RequestHandler
     /**
      * @param ServerRequestInterface $request
      * @param StreamData $streamData
+     * @param array $routeVars
      * @param $service
      * @param string $method
      * @return object
@@ -128,21 +131,22 @@ class ContainerAwareRequestHandler implements RequestHandler
     private function generateServiceRequest(
         ServerRequestInterface $request,
         StreamData $streamData,
+        array $routeVars,
         $service,
         string $method
     ) {
         $requestInfo = new ReflectionParameter([$service, $method], 0);
         $serviceRequest = (string) $requestInfo->getType();
 
-        return call_user_func_array([$serviceRequest, 'createFromHttpRequest'], [$request, $streamData]);
+        return call_user_func_array([$serviceRequest, 'createFromHttpRequest'], [$request, $streamData, $routeVars]);
     }
 
     /**
      * @param string $method
      * @param string $path
-     * @return RouteDefinition
+     * @return Match
      */
-    private function getRouteDefinition(string $method, string $path): RouteDefinition
+    private function matchRoute(string $method, string $path): Match
     {
         return $this->router->find(
             new Route($method, UriHelper::stripQuery($path))
