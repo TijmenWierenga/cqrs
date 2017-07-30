@@ -13,9 +13,9 @@ use TijmenWierenga\Project\Common\Infrastructure\Bootstrap\App;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\Match;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\MiddlewareHandler;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\Route;
-use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\RouteDefinition;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\Router;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\UriHelper;
+use TijmenWierenga\Server\RequestHandler;
 
 /**
  * @author Tijmen Wierenga <tijmen.wierenga@devmob.com>
@@ -51,16 +51,15 @@ class ContainerAwareRequestHandler implements RequestHandler
      * Handles a server request and returns an appropriate response
      *
      * @param ServerRequestInterface $request
-     * @param StreamData $streamData
      * @return ResponseInterface
      * @internal param StreamData $data
      */
-    public function handle(ServerRequestInterface $request, StreamData $streamData): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         try {
             $route = $this->matchRoute($request->getMethod(), $request->getUri()->getPath());
 
-            return $this->handleRequest($request, $streamData, $route);
+            return $this->handleRequest($request, $route);
         } catch (HttpException $e) {
             // TODO: Transform response based on content type
             return new Response(
@@ -85,13 +84,11 @@ class ContainerAwareRequestHandler implements RequestHandler
 
     /**
      * @param ServerRequestInterface $request
-     * @param StreamData $streamData
      * @param Match $match
      * @return ResponseInterface
      */
     private function handleRequest(
         ServerRequestInterface $request,
-        StreamData $streamData,
         Match $match
     ): ResponseInterface {
         $routeDefinition = $match->getRouteDefinition();
@@ -99,20 +96,18 @@ class ContainerAwareRequestHandler implements RequestHandler
 
         $this->callMiddleware(
             $request,
-            $streamData,
             $routeDefinition->getMiddleware()->getBeforeMiddleware(),
             $this->globalMiddleware['before']
         );
 
         $service = $this->container->get($routeHandler->getServiceId());
         $method = $routeHandler->getMethod();
-        $serviceRequest = $this->generateServiceRequest($request, $streamData, $match->getVars(), $service, $method);
+        $serviceRequest = $this->generateServiceRequest($request, $match->getVars(), $service, $method);
         /** @var HttpResponse $serviceResponse */
         $serviceResponse = $service->$method($serviceRequest);
 
         $this->callMiddleware(
             $request,
-            $streamData,
             $this->globalMiddleware['after'],
             $routeDefinition->getMiddleware()->getAfterMiddleware()
         );
@@ -122,7 +117,6 @@ class ContainerAwareRequestHandler implements RequestHandler
 
     /**
      * @param ServerRequestInterface $request
-     * @param StreamData $streamData
      * @param array $routeVars
      * @param $service
      * @param string $method
@@ -130,7 +124,6 @@ class ContainerAwareRequestHandler implements RequestHandler
      */
     private function generateServiceRequest(
         ServerRequestInterface $request,
-        StreamData $streamData,
         array $routeVars,
         $service,
         string $method
@@ -138,7 +131,7 @@ class ContainerAwareRequestHandler implements RequestHandler
         $requestInfo = new ReflectionParameter([$service, $method], 0);
         $serviceRequest = (string) $requestInfo->getType();
 
-        return call_user_func_array([$serviceRequest, 'createFromHttpRequest'], [$request, $streamData, $routeVars]);
+        return call_user_func_array([$serviceRequest, 'createFromHttpRequest'], [$request, $routeVars]);
     }
 
     /**
@@ -155,33 +148,29 @@ class ContainerAwareRequestHandler implements RequestHandler
 
     /**
      * @param ServerRequestInterface $request
-     * @param StreamData $streamData
      * @param array ...$middlewareCollections
      */
     private function callMiddleware(
         ServerRequestInterface $request,
-        StreamData $streamData,
         ...$middlewareCollections
     ): void {
         foreach ($middlewareCollections as $middlewareCollection) {
-            $this->handleMiddleware($request, $streamData, $middlewareCollection);
+            $this->handleMiddleware($request, $middlewareCollection);
         }
     }
 
     /**
      * @param ServerRequestInterface $request
-     * @param StreamData $streamData
      * @param iterable|MiddlewareHandler[] $middlewareCollection
      */
     private function handleMiddleware(
         ServerRequestInterface $request,
-        StreamData $streamData,
         iterable $middlewareCollection
     ): void {
         foreach ($middlewareCollection as $handler) {
             /** @var Middleware $service */
             $service = $this->container->get($handler->getServiceId());
-            $service->handle($request, $streamData, ...$handler->getArguments());
+            $service->handle($request, ...$handler->getArguments());
         }
     }
 
