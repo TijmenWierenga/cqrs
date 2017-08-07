@@ -37,7 +37,8 @@ class RetrieveUserRequest implements HttpRequest
      * @param ServerRequestInterface $request
      * @return HttpRequest
      */
-    public static function createFromHttpRequest(ServerRequestInterface $request) {
+    public static function createFromHttpRequest(ServerRequestInterface $request)
+    {
         return new self($request->getAttribute('route')->getRouteVars()->get('id'));
     }
 }

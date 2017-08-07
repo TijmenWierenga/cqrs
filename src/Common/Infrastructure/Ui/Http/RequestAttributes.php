@@ -6,7 +6,7 @@ use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\RouteVars;
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
  */
-class RequestAttributes 
+class RequestAttributes
 {
     /**
      * @var RouteVars
