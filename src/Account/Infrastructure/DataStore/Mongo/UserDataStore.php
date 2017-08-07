@@ -52,6 +52,6 @@ class UserDataStore extends AbstractDataStore implements UserDataStoreInterface
 
     public function getCollection(): string
     {
-        return  'users';
+        return 'users';
     }
 }
