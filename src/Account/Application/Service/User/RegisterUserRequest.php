@@ -82,10 +82,9 @@ class RegisterUserRequest implements HttpRequest
      * Generates a Service Request from a HttpRequest (ServerRequestInterface)
      *
      * @param ServerRequestInterface $request
-     * @param array $vars
      * @return RegisterUserRequest
      */
-    public static function createFromHttpRequest(ServerRequestInterface $request, array $vars): self
+    public static function createFromHttpRequest(ServerRequestInterface $request): self
     {
         $data = $request->getParsedBody();
 

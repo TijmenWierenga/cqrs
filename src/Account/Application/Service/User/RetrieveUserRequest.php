@@ -35,13 +35,9 @@ class RetrieveUserRequest implements HttpRequest
      * Generates a Service Request from a HttpRequest (ServerRequestInterface)
      *
      * @param ServerRequestInterface $request
-     * @param array $routeVars
      * @return HttpRequest
      */
-    public static function createFromHttpRequest(
-        ServerRequestInterface $request,
-        array $routeVars
-    ) {
-        return new self($routeVars['id']);
+    public static function createFromHttpRequest(ServerRequestInterface $request) {
+        return new self($request->getAttribute('route')->getRouteVars()->get('id'));
     }
 }

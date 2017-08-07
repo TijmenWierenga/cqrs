@@ -48,7 +48,7 @@ class SimpleRouter implements Router
             throw HttpException::methodNotAllowed($routeDefinition);
         }
 
-        return new Match($routeDefinition, $routeVars);
+        return new Match($routeDefinition, new RouteVars($routeVars));
     }
 
     private function registerRoutes()

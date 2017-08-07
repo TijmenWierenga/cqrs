@@ -12,19 +12,20 @@ class Match
      */
     private $routeDefinition;
     /**
-     * @var array
+     * @var RouteVars
      */
-    private $vars;
+    private $routeVars;
 
     /**
      * Match constructor.
      * @param RouteDefinition $routeDefinition
-     * @param array $vars
+     * @param RouteVars $routeVars
+     * @internal param RouteVars $vars
      */
-    public function __construct(RouteDefinition $routeDefinition, array $vars)
+    public function __construct(RouteDefinition $routeDefinition, RouteVars $routeVars)
     {
         $this->routeDefinition = $routeDefinition;
-        $this->vars = $vars;
+        $this->routeVars = $routeVars;
     }
 
     /**
@@ -36,10 +37,10 @@ class Match
     }
 
     /**
-     * @return array
+     * @return RouteVars
      */
-    public function getVars(): array
+    public function getRouteVars(): RouteVars
     {
-        return $this->vars;
+        return $this->routeVars;
     }
 }

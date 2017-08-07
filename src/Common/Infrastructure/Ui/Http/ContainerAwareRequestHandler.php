@@ -58,8 +58,9 @@ class ContainerAwareRequestHandler implements RequestHandler
     {
         try {
             $route = $this->matchRoute($request->getMethod(), $request->getUri()->getPath());
+            $request = $request->withAttribute('route', $route);
 
-            return $this->handleRequest($request, $route);
+            return $this->handleRequest($request);
         } catch (HttpException $e) {
             // TODO: Transform response based on content type
             return new Response(
@@ -84,14 +85,14 @@ class ContainerAwareRequestHandler implements RequestHandler
 
     /**
      * @param ServerRequestInterface $request
-     * @param Match $match
      * @return ResponseInterface
      */
     private function handleRequest(
-        ServerRequestInterface $request,
-        Match $match
+        ServerRequestInterface $request
     ): ResponseInterface {
-        $routeDefinition = $match->getRouteDefinition();
+        /** @var Match $route */
+        $route = $request->getAttribute('route');
+        $routeDefinition = $route->getRouteDefinition();
         $routeHandler = $routeDefinition->getHandler();
 
         $this->callMiddleware(
@@ -102,7 +103,7 @@ class ContainerAwareRequestHandler implements RequestHandler
 
         $service = $this->container->get($routeHandler->getServiceId());
         $method = $routeHandler->getMethod();
-        $serviceRequest = $this->generateServiceRequest($request, $match->getVars(), $service, $method);
+        $serviceRequest = $this->generateServiceRequest($request, $service, $method);
         /** @var HttpResponse $serviceResponse */
         $serviceResponse = $service->$method($serviceRequest);
 
@@ -117,21 +118,19 @@ class ContainerAwareRequestHandler implements RequestHandler
 
     /**
      * @param ServerRequestInterface $request
-     * @param array $routeVars
      * @param $service
      * @param string $method
      * @return object
      */
     private function generateServiceRequest(
         ServerRequestInterface $request,
-        array $routeVars,
         $service,
         string $method
     ) {
         $requestInfo = new ReflectionParameter([$service, $method], 0);
         $serviceRequest = (string) $requestInfo->getType();
 
-        return call_user_func_array([$serviceRequest, 'createFromHttpRequest'], [$request, $routeVars]);
+        return call_user_func_array([$serviceRequest, 'createFromHttpRequest'], [$request]);
     }
 
     /**
