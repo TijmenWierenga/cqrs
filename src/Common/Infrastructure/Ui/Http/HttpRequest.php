@@ -12,8 +12,7 @@ interface HttpRequest
      * Generates a Service Request from a HttpRequest (ServerRequestInterface)
      *
      * @param ServerRequestInterface $request
-     * @param StreamData $streamData
      * @return HttpRequest
      */
-    public static function createFromHttpRequest(ServerRequestInterface $request, StreamData $streamData);
+    public static function createFromHttpRequest(ServerRequestInterface $request);
 }

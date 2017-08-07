@@ -33,12 +33,12 @@
         "nikic/fast-route": "^1.2",
         "psr/http-message": "^1.0",
         "guzzlehttp/psr7": "^1.4",
-        "react/http": "^0.7.1"
+        "react/http": "^0.7.1",
+        "tijmen-wierenga/async-php-server": "^0.1.0"
     },
     "autoload": {
         "psr-4": {
-            "TijmenWierenga\\Project\\": "src/",
-            "TijmenWierenga\\Server\\": "server/"
+            "TijmenWierenga\\Project\\": "src/"
         }
     },
     "autoload-dev": {

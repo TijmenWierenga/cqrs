@@ -33,12 +33,12 @@ class SimpleRouter implements Router
 
     /**
      * @param Route $route
-     * @return RouteDefinition
+     * @return Match
      */
-    public function find(Route $route): RouteDefinition
+    public function find(Route $route): Match
     {
         $routeInfo = $this->dispatcher->dispatch($route->getHttpMethod(), $route->getUri());
-        list($status, $routeDefinition, $vars) = $routeInfo;
+        list($status, $routeDefinition, $routeVars) = $routeInfo;
 
         if ($status === Router::NOT_FOUND) {
             throw HttpException::notFound();
@@ -48,7 +48,7 @@ class SimpleRouter implements Router
             throw HttpException::methodNotAllowed($routeDefinition);
         }
 
-        return $routeDefinition;
+        return new Match($routeDefinition, new RouteVars($routeVars));
     }
 
     private function registerRoutes()

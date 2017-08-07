@@ -9,3 +9,9 @@ user:
             middleware:
                 before:
                     - common.middleware.guest: ~
+        get:
+            method: GET
+            uri: /{id}
+            handler:
+                id: account.service.user.find
+                method: find

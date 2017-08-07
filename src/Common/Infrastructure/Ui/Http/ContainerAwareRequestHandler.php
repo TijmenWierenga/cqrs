@@ -10,11 +10,12 @@ use React\Http\Response;
 use ReflectionParameter;
 use TijmenWierenga\Project\Common\Application\Middleware\Middleware;
 use TijmenWierenga\Project\Common\Infrastructure\Bootstrap\App;
+use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\Match;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\MiddlewareHandler;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\Route;
-use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\RouteDefinition;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\Router;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\Router\UriHelper;
+use TijmenWierenga\Server\RequestHandler;
 
 /**
  * @author Tijmen Wierenga <tijmen.wierenga@devmob.com>
@@ -50,16 +51,16 @@ class ContainerAwareRequestHandler implements RequestHandler
      * Handles a server request and returns an appropriate response
      *
      * @param ServerRequestInterface $request
-     * @param StreamData $streamData
      * @return ResponseInterface
      * @internal param StreamData $data
      */
-    public function handle(ServerRequestInterface $request, StreamData $streamData): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         try {
-            $routeDefinition = $this->getRouteDefinition($request->getMethod(), $request->getUri()->getPath());
+            $route = $this->matchRoute($request->getMethod(), $request->getUri()->getPath());
+            $request = $request->withAttribute('route', $route);
 
-            return $this->handleRequest($request, $streamData, $routeDefinition);
+            return $this->handleRequest($request);
         } catch (HttpException $e) {
             // TODO: Transform response based on content type
             return new Response(
@@ -84,68 +85,60 @@ class ContainerAwareRequestHandler implements RequestHandler
 
     /**
      * @param ServerRequestInterface $request
-     * @param StreamData $streamData
-     * @param RouteDefinition $routeDefinition
      * @return ResponseInterface
      */
     private function handleRequest(
-        ServerRequestInterface $request,
-        StreamData $streamData,
-        RouteDefinition $routeDefinition
+        ServerRequestInterface $request
     ): ResponseInterface {
+        /** @var Match $route */
+        $route = $request->getAttribute('route');
+        $routeDefinition = $route->getRouteDefinition();
         $routeHandler = $routeDefinition->getHandler();
 
         $this->callMiddleware(
             $request,
-            $streamData,
             $routeDefinition->getMiddleware()->getBeforeMiddleware(),
             $this->globalMiddleware['before']
         );
 
         $service = $this->container->get($routeHandler->getServiceId());
         $method = $routeHandler->getMethod();
-        $serviceRequest = $this->generateServiceRequest($request, $streamData, $service, $method);
-        // TODO: Note to self: create controller and return response that can be transformed based on accept header
-        $response = $service->$method($serviceRequest);
+        $serviceRequest = $this->generateServiceRequest($request, $service, $method);
+        /** @var HttpResponse $serviceResponse */
+        $serviceResponse = $service->$method($serviceRequest);
 
         $this->callMiddleware(
             $request,
-            $streamData,
             $this->globalMiddleware['after'],
             $routeDefinition->getMiddleware()->getAfterMiddleware()
         );
 
-        // TODO: Transform Response based on accept header
-        return new Response(200, [
-            'Content-Type' => 'application/json'
-        ], json_encode($response));
+        return ResponseFactory::generate($request, $serviceResponse);
     }
 
     /**
      * @param ServerRequestInterface $request
-     * @param StreamData $streamData
      * @param $service
      * @param string $method
      * @return object
      */
     private function generateServiceRequest(
         ServerRequestInterface $request,
-        StreamData $streamData,
         $service,
         string $method
     ) {
         $requestInfo = new ReflectionParameter([$service, $method], 0);
         $serviceRequest = (string) $requestInfo->getType();
 
-        return call_user_func_array([$serviceRequest, 'createFromHttpRequest'], [$request, $streamData]);
+        return call_user_func_array([$serviceRequest, 'createFromHttpRequest'], [$request]);
     }
 
     /**
      * @param string $method
      * @param string $path
-     * @return RouteDefinition
+     * @return Match
      */
-    private function getRouteDefinition(string $method, string $path): RouteDefinition
+    private function matchRoute(string $method, string $path): Match
     {
         return $this->router->find(
             new Route($method, UriHelper::stripQuery($path))
@@ -154,33 +147,29 @@ class ContainerAwareRequestHandler implements RequestHandler
 
     /**
      * @param ServerRequestInterface $request
-     * @param StreamData $streamData
      * @param array ...$middlewareCollections
      */
     private function callMiddleware(
         ServerRequestInterface $request,
-        StreamData $streamData,
         ...$middlewareCollections
     ): void {
         foreach ($middlewareCollections as $middlewareCollection) {
-            $this->handleMiddleware($request, $streamData, $middlewareCollection);
+            $this->handleMiddleware($request, $middlewareCollection);
         }
     }
 
     /**
      * @param ServerRequestInterface $request
-     * @param StreamData $streamData
      * @param iterable|MiddlewareHandler[] $middlewareCollection
      */
     private function handleMiddleware(
         ServerRequestInterface $request,
-        StreamData $streamData,
         iterable $middlewareCollection
     ): void {
         foreach ($middlewareCollection as $handler) {
             /** @var Middleware $service */
             $service = $this->container->get($handler->getServiceId());
-            $service->handle($request, $streamData, ...$handler->getArguments());
+            $service->handle($request, ...$handler->getArguments());
         }
     }
 

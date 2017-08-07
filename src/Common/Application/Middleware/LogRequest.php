@@ -4,7 +4,6 @@ namespace TijmenWierenga\Project\Common\Application\Middleware;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
-use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\StreamData;
 
 /**
  * @author Tijmen Wierenga <tijmen.wierenga@devmob.com>
@@ -28,10 +27,9 @@ class LogRequest implements Middleware
 
     /**
      * @param ServerRequestInterface $request
-     * @param StreamData $streamData
      * @param array ...$params
      */
-    public function handle(ServerRequestInterface $request, StreamData $streamData, ...$params): void
+    public function handle(ServerRequestInterface $request, ...$params): void
     {
         $this->logger->info("Incoming request", [
             $request->getHeaders()

@@ -3,7 +3,6 @@ namespace TijmenWierenga\Project\Account\Application\Service\User;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\HttpRequest;
-use TijmenWierenga\Project\Common\Infrastructure\Ui\Http\StreamData;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
@@ -83,16 +82,17 @@ class RegisterUserRequest implements HttpRequest
      * Generates a Service Request from a HttpRequest (ServerRequestInterface)
      *
      * @param ServerRequestInterface $request
-     * @param StreamData $data
      * @return RegisterUserRequest
      */
-    public static function createFromHttpRequest(ServerRequestInterface $request, StreamData $data): self
+    public static function createFromHttpRequest(ServerRequestInterface $request): self
     {
+        $data = $request->getParsedBody();
+
         return new self(
-            $data->get('first_name'),
-            $data->get('last_name'),
-            $data->get('email'),
-            $data->get('password')
+            $data['first_name'],
+            $data['last_name'],
+            $data['email'],
+            $data['password']
         );
     }
 }
