@@ -10,29 +10,15 @@ use TijmenWierenga\Project\Account\Domain\Model\ValueObject\Email;
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
  */
-class UserDataStore implements UserDataStoreInterface
+class UserDataStore extends AbstractDataStore implements UserDataStoreInterface
 {
-    const NAMESPACE = 'project';
-    const COLLECTION = 'users';
-
-    /**
-     * @var Client
-     */
-    private $client;
-
-    /**
-     * @var Collection
-     */
-    private $collection;
-
     /**
      * UserDataStore constructor.
      * @param Client $client
      */
     public function __construct(Client $client)
     {
-        $this->client = $client;
-        $this->collection = $this->client->{self::NAMESPACE}->{self::COLLECTION};
+        parent::__construct($client);
     }
 
     /**
@@ -57,5 +43,15 @@ class UserDataStore implements UserDataStoreInterface
     public function find(UserId $userId)
     {
         return $this->collection->findOne(['_id' => (string) $userId]);
+    }
+
+    public function getNamespace(): string
+    {
+        return 'project';
+    }
+
+    public function getCollection(): string
+    {
+        return  'users';
     }
 }
