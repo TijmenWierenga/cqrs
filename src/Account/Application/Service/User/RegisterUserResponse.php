@@ -16,6 +16,6 @@ class RegisterUserResponse extends ServiceResponse implements HttpResponse
      */
     public function __construct(User $user)
     {
-        parent::__construct(201, $user);
+        parent::__construct(self::HTTP_CREATED, $user);
     }
 }

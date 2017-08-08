@@ -5,6 +5,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use React\Http\ServerRequest;
+use Lukasoppermann\Httpstatus\Httpstatuscodes as HttpStatus;
 
 /**
  * @author Tijmen Wierenga <t.wierenga@live.nl>
@@ -48,7 +49,7 @@ class ResponseFactoryTest extends TestCase
              * @param array $headers
              * @param array $data
              */
-            public function __construct($statusCode = 200, array $headers = [], array $data = [
+            public function __construct($statusCode = HttpStatus::HTTP_OK, array $headers = [], array $data = [
                 "name" => "Tijmen",
                 "age" => 30
             ])
@@ -80,10 +81,10 @@ class ResponseFactoryTest extends TestCase
                 new $serviceResponse
             ], [
             new ServerRequest("GET", "/", ["Accept" => "application/json"]),
-                new $serviceResponse(400)
+                new $serviceResponse(HttpStatus::HTTP_BAD_REQUEST)
             ], [
                 new ServerRequest("POST", "/", ["Accept" => "application/json"]),
-                new $serviceResponse(201)
+                new $serviceResponse(HttpStatus::HTTP_CREATED)
             ]
         ];
     }

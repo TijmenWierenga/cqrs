@@ -34,7 +34,9 @@
         "psr/http-message": "^1.0",
         "guzzlehttp/psr7": "^1.4",
         "react/http": "^0.7.1",
-        "tijmen-wierenga/async-php-server": "^0.1.0"
+        "tijmen-wierenga/async-php-server": "^0.1.0",
+        "roave/security-advisories": "dev-master",
+        "lukasoppermann/http-status": "^2.0"
     },
     "autoload": {
         "psr-4": {

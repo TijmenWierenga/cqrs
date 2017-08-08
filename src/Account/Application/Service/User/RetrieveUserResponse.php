@@ -16,6 +16,6 @@ class RetrieveUserResponse extends ServiceResponse implements HttpResponse
      */
     public function __construct($user)
     {
-        parent::__construct(200, $user);
+        parent::__construct(self::HTTP_OK, $user);
     }
 }
