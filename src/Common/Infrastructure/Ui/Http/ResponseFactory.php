@@ -19,7 +19,7 @@ class ResponseFactory
      */
     public static function generate(ServerRequestInterface $request, HttpResponse $response): ResponseInterface
     {
-        switch ($request->getHeader('Content-Type')) {
+        switch ($request->getHeader('Accept')[0]) {
             case 'application/json':
             default:
                 return self::parseJsonResponse($response);
