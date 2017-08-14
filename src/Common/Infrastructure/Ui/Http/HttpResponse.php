@@ -1,10 +1,12 @@
 <?php
 namespace TijmenWierenga\Project\Common\Infrastructure\Ui\Http;
 
+use Lukasoppermann\Httpstatus\Httpstatuscodes as HttpStatusCodes;
+
 /**
  * @author Tijmen Wierenga <tijmen.wierenga@devmob.com>
  */
-interface HttpResponse
+interface HttpResponse extends HttpStatusCodes
 {
     /**
      * @return int
