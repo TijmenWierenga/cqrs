@@ -7,6 +7,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use React\Http\Response;
+use ReflectionException;
 use ReflectionParameter;
 use TijmenWierenga\Project\Common\Application\Middleware\Middleware;
 use TijmenWierenga\Project\Common\Infrastructure\Bootstrap\App;
@@ -120,14 +121,19 @@ class ContainerAwareRequestHandler implements RequestHandler
      * @param ServerRequestInterface $request
      * @param $service
      * @param string $method
-     * @return object
+     * @return object|null
      */
     private function generateServiceRequest(
         ServerRequestInterface $request,
         $service,
         string $method
     ) {
-        $requestInfo = new ReflectionParameter([$service, $method], 0);
+        try {
+            $requestInfo = new ReflectionParameter([$service, $method], 0);
+        } catch (ReflectionException $e) {
+            return null; // If method does not have an argument, we return null.
+        }
+
         $serviceRequest = (string) $requestInfo->getType();
 
         return call_user_func_array([$serviceRequest, 'createFromHttpRequest'], [$request]);

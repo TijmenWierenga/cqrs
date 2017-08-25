@@ -31,6 +31,9 @@ services:
         tags:
             - { name: projection }
 
+    common.service.healthcheck:
+        class: TijmenWierenga\Project\Common\Application\Service\HealthcheckService
+
     common.console.register_user:
         class: TijmenWierenga\Project\Common\Infrastructure\Ui\Console\Command\Account\RegisterUserCommand
         arguments: ["@account.service.user.register"]
