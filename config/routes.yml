@@ -15,3 +15,12 @@ user:
             handler:
                 id: account.service.user.find
                 method: find
+
+healthcheck:
+    endpoints:
+        check:
+            method: GET
+            uri: /
+            handler:
+                id: common.service.healthcheck
+                method: check

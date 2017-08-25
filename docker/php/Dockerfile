@@ -22,5 +22,6 @@ RUN pecl install mongodb-1.2.9 \
 RUN pear install PHP_CodeSniffer-3.0.0RC3
 
 WORKDIR /var/www/project
+HEALTHCHECK --interval=10s CMD curl -sSf localhost:1337/healthcheck > /dev/null
 
 EXPOSE 1337
