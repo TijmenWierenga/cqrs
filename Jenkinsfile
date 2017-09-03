@@ -1,17 +1,25 @@
 #!/usr/bin/env groovy
 
-node('master') {
-    try {
+pipeline {
+    agent any
+
+    stages {
         stage('build') {
-            sh "make build"
+            steps {
+                sh "make build"
+            }
         }
 
         stage('test') {
-            sh "make test"
+            steps {
+                sh "make test"
+            }
         }
-    } catch(error) {
-        throw error
-    } finally {
-        sh "make teardown"
+
+        stage('teardown') {
+            steps {
+                sh "make teardown"
+            }
+        }
     }
 }
