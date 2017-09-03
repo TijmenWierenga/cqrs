@@ -3,7 +3,6 @@
 node('master') {
     try {
         stage('build') {
-            git url: git@github.com:TijmenWierenga/cqrs.git
             sh "make build"
         }
 
