@@ -121,7 +121,7 @@ Change docker-machine memory
 When you need more memory inside your `docker-machine` VM run the following commands on your host os:
 
 ```
-VBoxManage controlvm default poweroff
-VBoxManage modifyvm default --memory 2048
-VBoxManage startvm default --type headless
+VBoxManage controlvm cqrs poweroff
+VBoxManage modifyvm cqrs --memory 2048
+VBoxManage startvm cqrs --type headless
 ```
